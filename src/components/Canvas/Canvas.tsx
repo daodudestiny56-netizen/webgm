@@ -1,14 +1,42 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useCanvasStore } from '../../store/useCanvasStore';
 import { CanvasElementItem } from './CanvasElementItem';
 import { ProofreaderFlagMark, ProofreaderAnnotationMark } from '../Annotations/ProofreaderMark';
 import { AgentCursor } from '../AgentPanel/AgentCursor';
 import { getNonOverlappingPosition } from '../../utils/pinCollision';
 import type { BoundingBox } from '../../utils/pinCollision';
+import { Sparkles, Layers } from 'lucide-react';
 
 export const Canvas: React.FC = () => {
   const { elements, flags, annotations, selectElement, isBeforeAfterMode, beforeSnapshot } = useCanvasStore();
+  const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState<number>(1);
+
+  // Auto-Scale Canvas to fit available container width cleanly
+  useEffect(() => {
+    const updateScale = () => {
+      if (!containerRef.current) return;
+      const containerWidth = containerRef.current.clientWidth;
+      if (containerWidth > 0) {
+        // Target canvas width is 800px
+        const newScale = Math.min(1, Math.max(0.4, containerWidth / 800));
+        setScale(newScale);
+      }
+    };
+
+    updateScale();
+    const observer = new ResizeObserver(updateScale);
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+    window.addEventListener('resize', updateScale);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', updateScale);
+    };
+  }, []);
 
   const handleCanvasClick = (e: React.MouseEvent) => {
     if (e.target === canvasRef.current || (e.target as HTMLElement).classList.contains('drafting-table-bg')) {
@@ -29,7 +57,6 @@ export const Canvas: React.FC = () => {
     const targetEl = elements.find((el) => el.id === flag.elementId);
     if (!targetEl) return null;
 
-    // Anchor margin note to right side or bottom of element
     const initialBox: BoundingBox = {
       x: Math.min(560, targetEl.x + targetEl.w + 16),
       y: Math.max(10, targetEl.y - 8),
@@ -72,136 +99,154 @@ export const Canvas: React.FC = () => {
   const leftTicks = Array.from({ length: 28 }, (_, i) => i * 20);
 
   return (
-    <div className="relative w-full h-[580px] overflow-hidden flex flex-col my-2 bg-[#F6F5F1] border border-[#D8D5CC]">
+    <div
+      ref={containerRef}
+      className="relative w-full overflow-hidden flex flex-col my-1 bg-[#F6F5F1] border border-[#D8D5CC] select-none"
+    >
       {/* Editorial Canvas Status Bar */}
-      <div className="h-8 px-4 bg-[#F6F5F1] border-b border-[#D8D5CC] flex items-center justify-between font-sans text-xs text-[#17181A]">
+      <div className="h-8 px-3 bg-[#F6F5F1] border-b border-[#D8D5CC] flex items-center justify-between font-sans text-xs text-[#17181A] shrink-0">
         <div className="flex items-center gap-2">
-          <span className="font-semibold text-xs tracking-wider uppercase">DRAFTING CANVAS // MOCKUP_01</span>
-          <span className="text-[#6B7280]">({elements.length} DOM nodes)</span>
+          <Layers size={13} className="text-[#17181A]" />
+          <span className="font-semibold text-xs tracking-wider uppercase">DRAFTING CANVAS</span>
+          <span className="text-[#6B7280] hidden sm:inline">({elements.length} nodes)</span>
         </div>
-        <div className="flex items-center gap-4 text-[11px] text-[#6B7280]">
+        <div className="flex items-center gap-3 text-[11px] text-[#6B7280]">
           {flags.length > 0 && (
             <span className="text-[#B3261E] font-semibold">
               {flags.length} {flags.length === 1 ? 'Proof Mark' : 'Proof Marks'}
             </span>
           )}
           {annotations.length > 0 && (
-            <span className="text-[#17181A] font-semibold">
-              {annotations.length} Margin Notes
+            <span className="text-[#17181A] font-semibold hidden sm:inline">
+              {annotations.length} Notes
             </span>
           )}
-          <span>800 × 580 px</span>
+          <span className="font-mono">{Math.round(scale * 100)}%</span>
         </div>
       </div>
 
-      {/* Main Drafting Table Surface */}
+      {/* Auto-Scaled Viewport Container */}
       <div
-        ref={canvasRef}
-        onClick={handleCanvasClick}
-        className="relative flex-1 w-full h-full bg-[#F6F5F1] overflow-hidden cursor-crosshair select-none drafting-table-bg"
+        className="relative w-full overflow-hidden bg-[#F6F5F1] transition-all"
+        style={{
+          height: `${Math.round(580 * scale)}px`,
+        }}
       >
-        {/* Top Ruler Ticks */}
-        <div className="absolute top-0 left-0 right-0 h-3 border-b border-[#D8D5CC]/60 flex pointer-events-none z-10">
-          {topTicks.map((x) => (
-            <div
-              key={`top-tick-${x}`}
-              className="absolute top-0 border-l border-[#D8D5CC]"
-              style={{
-                left: x,
-                height: x % 100 === 0 ? '12px' : '5px',
-              }}
-            />
+        {/* Scaled Canvas Layer (Original 800×580 coordinate system) */}
+        <div
+          ref={canvasRef}
+          onClick={handleCanvasClick}
+          className="relative w-[800px] h-[580px] bg-[#F6F5F1] cursor-crosshair drafting-table-bg origin-top-left"
+          style={{
+            transform: `scale(${scale})`,
+            transformOrigin: 'top left',
+          }}
+        >
+          {/* Top Ruler Ticks */}
+          <div className="absolute top-0 left-0 right-0 h-3 border-b border-[#D8D5CC]/60 flex pointer-events-none z-10">
+            {topTicks.map((x) => (
+              <div
+                key={`top-tick-${x}`}
+                className="absolute top-0 border-l border-[#D8D5CC]"
+                style={{
+                  left: x,
+                  height: x % 100 === 0 ? '12px' : '5px',
+                }}
+              />
+            ))}
+          </div>
+
+          {/* Left Ruler Ticks */}
+          <div className="absolute top-0 left-0 bottom-0 w-3 border-r border-[#D8D5CC]/60 flex flex-col pointer-events-none z-10">
+            {leftTicks.map((y) => (
+              <div
+                key={`left-tick-${y}`}
+                className="absolute left-0 border-t border-[#D8D5CC]"
+                style={{
+                  top: y,
+                  width: y % 100 === 0 ? '12px' : '5px',
+                }}
+              />
+            ))}
+          </div>
+
+          {/* Render Canvas Elements */}
+          {elements.map((element) => (
+            <CanvasElementItem key={element.id} element={element} />
           ))}
-        </div>
 
-        {/* Left Ruler Ticks */}
-        <div className="absolute top-0 left-0 bottom-0 w-3 border-r border-[#D8D5CC]/60 flex flex-col pointer-events-none z-10">
-          {leftTicks.map((y) => (
-            <div
-              key={`left-tick-${y}`}
-              className="absolute left-0 border-t border-[#D8D5CC]"
-              style={{
-                top: y,
-                width: y % 100 === 0 ? '12px' : '5px',
-              }}
-            />
-          ))}
-        </div>
+          {/* Render Proofreader Flag Marks & Handwritten Margin Notes */}
+          {computedFlags.map((item) => {
+            if (!item) return null;
+            return (
+              <ProofreaderFlagMark
+                key={item.flag.id}
+                flag={item.flag}
+                elementX={item.targetEl.x}
+                elementY={item.targetEl.y}
+                elementW={item.targetEl.w}
+                elementH={item.targetEl.h}
+                noteX={item.noteX}
+                noteY={item.noteY}
+              />
+            );
+          })}
 
-        {/* Render Canvas Elements */}
-        {elements.map((element) => (
-          <CanvasElementItem key={element.id} element={element} />
-        ))}
-
-        {/* Render Proofreader Flag Marks & Handwritten Margin Notes */}
-        {computedFlags.map((item) => {
-          if (!item) return null;
-          return (
-            <ProofreaderFlagMark
-              key={item.flag.id}
-              flag={item.flag}
-              elementX={item.targetEl.x}
-              elementY={item.targetEl.y}
-              elementW={item.targetEl.w}
-              elementH={item.targetEl.h}
+          {/* Render Proofreader Margin Annotations */}
+          {computedAnnotations.map((item) => (
+            <ProofreaderAnnotationMark
+              key={item.annotation.id}
+              annotation={item.annotation}
               noteX={item.noteX}
               noteY={item.noteY}
             />
-          );
-        })}
+          ))}
 
-        {/* Render Proofreader Margin Annotations */}
-        {computedAnnotations.map((item) => (
-          <ProofreaderAnnotationMark
-            key={item.annotation.id}
-            annotation={item.annotation}
-            noteX={item.noteX}
-            noteY={item.noteY}
-          />
-        ))}
+          {/* Render Minimal Agent Cursor */}
+          <AgentCursor />
 
-        {/* Render Minimal Agent Cursor */}
-        <AgentCursor />
-
-        {/* Before/After Diff Mode Overlay */}
-        {isBeforeAfterMode && beforeSnapshot && (
-          <div className="absolute inset-0 bg-[#F6F5F1]/95 backdrop-blur-[1px] z-50 flex flex-col p-4 pointer-events-auto border-t border-[#D8D5CC]">
-            <div className="border-b border-[#D8D5CC] pb-2 text-xs font-semibold text-[#17181A] flex justify-between items-center mb-3">
-              <span>BEFORE vs AFTER MANUSCRIPT DIFF</span>
-              <span className="text-[#6B7280]">Left: Original Flawed Baseline | Right: Current Canvas</span>
-            </div>
-
-            <div className="flex-1 grid grid-cols-2 gap-4">
-              {/* Before Snapshot */}
-              <div className="relative border border-dashed border-[#B3261E] bg-[#B3261E]/5 p-2 rounded-none overflow-hidden">
-                <div className="absolute top-2 left-2 text-[11px] font-semibold text-[#B3261E] z-10">BEFORE (3 Issues)</div>
-                {beforeSnapshot.map((el) => (
-                  <div
-                    key={el.id}
-                    className="absolute border border-[#B3261E]/40 text-[10px] text-[#B3261E] flex items-center justify-center p-1 overflow-hidden"
-                    style={{ left: el.x * 0.45, top: el.y * 0.45, width: el.w * 0.45, height: el.h * 0.45 }}
-                  >
-                    {el.id}
-                  </div>
-                ))}
+          {/* Before/After Diff Mode Overlay */}
+          {isBeforeAfterMode && beforeSnapshot && (
+            <div className="absolute inset-0 bg-[#F6F5F1]/95 backdrop-blur-[1px] z-50 flex flex-col p-4 pointer-events-auto border-t border-[#D8D5CC]">
+              <div className="border-b border-[#D8D5CC] pb-2 text-xs font-semibold text-[#17181A] flex justify-between items-center mb-3">
+                <span className="flex items-center gap-1">
+                  <Sparkles size={13} /> BEFORE vs AFTER DIFF
+                </span>
+                <span className="text-[#6B7280]">Left: Original | Right: Current</span>
               </div>
 
-              {/* After State */}
-              <div className="relative border border-solid border-[#3D6B52] bg-[#3D6B52]/5 p-2 rounded-none overflow-hidden">
-                <div className="absolute top-2 left-2 text-[11px] font-semibold text-[#3D6B52] z-10">AFTER (Agent Fixed)</div>
-                {elements.map((el) => (
-                  <div
-                    key={el.id}
-                    className="absolute border border-[#3D6B52]/40 text-[10px] text-[#3D6B52] flex items-center justify-center p-1 overflow-hidden"
-                    style={{ left: el.x * 0.45, top: el.y * 0.45, width: el.w * 0.45, height: el.h * 0.45 }}
-                  >
-                    {el.id}
-                  </div>
-                ))}
+              <div className="flex-1 grid grid-cols-2 gap-4">
+                {/* Before Snapshot */}
+                <div className="relative border border-dashed border-[#B3261E] bg-[#B3261E]/5 p-2 overflow-hidden">
+                  <div className="absolute top-2 left-2 text-[10px] font-semibold text-[#B3261E] z-10">BEFORE</div>
+                  {beforeSnapshot.map((el) => (
+                    <div
+                      key={el.id}
+                      className="absolute border border-[#B3261E]/40 text-[9px] text-[#B3261E] flex items-center justify-center p-1 overflow-hidden"
+                      style={{ left: el.x * 0.45, top: el.y * 0.45, width: el.w * 0.45, height: el.h * 0.45 }}
+                    >
+                      {el.id}
+                    </div>
+                  ))}
+                </div>
+
+                {/* After State */}
+                <div className="relative border border-solid border-[#3D6B52] bg-[#3D6B52]/5 p-2 overflow-hidden">
+                  <div className="absolute top-2 left-2 text-[10px] font-semibold text-[#3D6B52] z-10">AFTER</div>
+                  {elements.map((el) => (
+                    <div
+                      key={el.id}
+                      className="absolute border border-[#3D6B52]/40 text-[9px] text-[#3D6B52] flex items-center justify-center p-1 overflow-hidden"
+                      style={{ left: el.x * 0.45, top: el.y * 0.45, width: el.w * 0.45, height: el.h * 0.45 }}
+                    >
+                      {el.id}
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );

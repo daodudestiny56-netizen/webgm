@@ -3,7 +3,11 @@ import { useCanvasStore } from '../../store/useCanvasStore';
 import type { ElementType } from '../../types/canvas';
 import { Type, Square, LayoutTemplate, Layers, Trash2, Plus, Sparkles, Navigation, Image } from 'lucide-react';
 
-export const LeftToolbox: React.FC = () => {
+interface LeftToolboxProps {
+  isCollapsed?: boolean;
+}
+
+export const LeftToolbox: React.FC<LeftToolboxProps> = ({ isCollapsed = false }) => {
   const { elements, addElement, selectedElementId, selectElement, deleteElement, clearCanvas, loadExampleLayout } =
     useCanvasStore();
 
@@ -16,8 +20,36 @@ export const LeftToolbox: React.FC = () => {
     { type: 'badge', label: 'Container', icon: <Layers size={14} /> },
   ];
 
+  if (isCollapsed) {
+    // Slim Icon-Only Rail for Tablet View
+    return (
+      <aside className="w-12 bg-[#F6F5F1] border-r border-[#D8D5CC] flex flex-col items-center py-2 gap-2 h-full font-sans select-none shrink-0">
+        {toolItems.map((item) => (
+          <button
+            key={item.type}
+            onClick={() => addElement(item.type)}
+            className="w-8 h-8 flex items-center justify-center bg-white border border-[#D8D5CC] hover:border-[#17181A] text-[#17181A] transition-colors cursor-pointer"
+            title={`Add ${item.label}`}
+          >
+            {item.icon}
+          </button>
+        ))}
+
+        <div className="w-6 border-b border-[#D8D5CC] my-1" />
+
+        <button
+          onClick={loadExampleLayout}
+          className="w-8 h-8 flex items-center justify-center bg-white border border-[#D8D5CC] text-[#17181A]"
+          title="Load Example"
+        >
+          <Sparkles size={13} />
+        </button>
+      </aside>
+    );
+  }
+
   return (
-    <aside className="w-56 bg-[#F6F5F1] border-r border-[#D8D5CC] flex flex-col h-full font-sans select-none">
+    <aside className="w-56 bg-[#F6F5F1] border-r border-[#D8D5CC] flex flex-col h-full font-sans select-none shrink-0">
       {/* Toolbox Section */}
       <div className="p-3 border-b border-[#D8D5CC]">
         <div className="text-[11px] font-semibold uppercase tracking-wider text-[#6B7280] mb-2 flex items-center justify-between">
