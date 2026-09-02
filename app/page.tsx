@@ -8,8 +8,7 @@ export default function LandingPage() {
       {/* 
         Main Layout Column:
         - Capped at max-w-5xl (1024px) centered with mx-auto
-        - Explicit Flexbox Gap (gap-12 sm:gap-16 md:gap-20) guarantees 48px-80px clear vertical spacing between sections
-        - Flanked by warm --paper background
+        - Explicit Flexbox Gap (gap-12 sm:gap-16 md:gap-20) guarantees clear vertical spacing
       */}
       <main className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-14 flex flex-col gap-12 sm:gap-16 md:gap-20 flex-1">
         
@@ -59,9 +58,9 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* 3. Three Simple Steps Section */}
-        <section id="how-it-works" className="w-full flex flex-col gap-4">
-          <div className="text-[11px] font-extrabold uppercase tracking-wider text-[#14161A] px-1">
+        {/* 3. Three Simple Steps Section — Centered Title & Centered Card Content */}
+        <section id="how-it-works" className="w-full flex flex-col items-center gap-4">
+          <div className="text-[11px] font-extrabold uppercase tracking-wider text-[#14161A] text-center w-full">
             Three Simple Steps to Review Any Canvas
           </div>
 
@@ -85,15 +84,14 @@ export default function LandingPage() {
             ].map((item) => (
               <div
                 key={item.step}
-                className="w-full bg-white border-2 border-[#14161A] shadow-[3px_3px_0_#14161A] p-6 sm:p-7 flex flex-col text-left"
+                className="w-full bg-white border-2 border-[#14161A] shadow-[3px_3px_0_#14161A] p-6 sm:p-7 flex flex-col items-center text-center"
               >
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-7 h-7 border-2 border-[#14161A] bg-[#F2C94C] flex items-center justify-center font-extrabold text-xs text-[#14161A]">
-                    {item.step}
-                  </div>
-                  <h3 className="font-extrabold text-sm sm:text-base text-[#14161A]">{item.title}</h3>
+                {/* Centered Step Square */}
+                <div className="w-8 h-8 border-2 border-[#14161A] bg-[#F2C94C] flex items-center justify-center font-extrabold text-xs text-[#14161A] mb-3">
+                  {item.step}
                 </div>
-                <p className="text-xs text-[#6B7280] leading-relaxed font-medium">{item.desc}</p>
+                <h3 className="font-extrabold text-sm sm:text-base text-[#14161A] mb-2 text-center">{item.title}</h3>
+                <p className="text-xs text-[#6B7280] leading-relaxed font-medium text-center">{item.desc}</p>
               </div>
             ))}
           </div>
@@ -299,35 +297,35 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* 5. Why WebMCP Comparison Section */}
-        <section className="w-full flex flex-col gap-4">
-          <div className="text-[11px] font-extrabold uppercase tracking-wider text-[#14161A] px-1">
+        {/* 5. Why WebMCP Comparison Section — Centered Header & Centered Card Content */}
+        <section className="w-full flex flex-col items-center gap-4">
+          <div className="text-[11px] font-extrabold uppercase tracking-wider text-[#14161A] text-center w-full">
             Why WebMCP? Spatial Tools vs Passive Chat
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6 w-full">
             {/* Traditional Chat Card */}
-            <div className="w-full bg-white border-2 border-[#14161A] shadow-[3px_3px_0_#14161A] p-6 sm:p-7 border-t-4 border-t-[#C1272D] flex flex-col">
-              <div className="inline-flex items-center gap-1.5 self-start bg-[#C1272D] text-[#F6F5F1] px-2.5 py-1 border border-[#14161A] font-bold text-[9px] uppercase tracking-wider mb-4">
+            <div className="w-full bg-white border-2 border-[#14161A] shadow-[3px_3px_0_#14161A] p-6 sm:p-8 border-t-4 border-t-[#C1272D] flex flex-col items-center text-center">
+              <div className="inline-flex items-center gap-1.5 bg-[#C1272D] text-[#F6F5F1] px-2.5 py-1 border border-[#14161A] font-bold text-[9px] uppercase tracking-wider mb-4">
                 <ShieldAlert size={11} />
                 <span>TRADITIONAL CHAT / VISION</span>
               </div>
 
-              <h4 className="font-extrabold text-base text-[#14161A] mb-1.5">Passive Text Descriptions</h4>
-              <p className="text-xs text-[#6B7280] leading-relaxed font-medium mb-5">
+              <h4 className="font-extrabold text-base text-[#14161A] mb-2 text-center">Passive Text Descriptions</h4>
+              <p className="text-xs text-[#6B7280] leading-relaxed font-medium mb-5 text-center max-w-sm">
                 AI generates verbose text advice. You manually interpret and tweak coordinates yourself.
               </p>
 
-              <div className="border-t border-[#D8D5CC] pt-4 space-y-2.5 mt-auto text-xs">
-                <div className="flex items-start gap-2 text-[#14161A]">
+              <div className="border-t border-[#D8D5CC] pt-4 space-y-2.5 mt-auto text-xs w-full flex flex-col items-start px-2 sm:px-4">
+                <div className="flex items-start gap-2.5 text-[#14161A] text-left">
                   <XCircle size={14} className="text-[#C1272D] shrink-0 mt-0.5" />
                   <span>Ambiguous feedback (&quot;make button bigger&quot;)</span>
                 </div>
-                <div className="flex items-start gap-2 text-[#14161A]">
+                <div className="flex items-start gap-2.5 text-[#14161A] text-left">
                   <XCircle size={14} className="text-[#C1272D] shrink-0 mt-0.5" />
                   <span>Vision models approximate clicks unreliably</span>
                 </div>
-                <div className="flex items-start gap-2 text-[#14161A]">
+                <div className="flex items-start gap-2.5 text-[#14161A] text-left">
                   <XCircle size={14} className="text-[#C1272D] shrink-0 mt-0.5" />
                   <span>Zero direct execution on the DOM or canvas</span>
                 </div>
@@ -335,27 +333,27 @@ export default function LandingPage() {
             </div>
 
             {/* WebMCP Spatial Card */}
-            <div className="w-full bg-white border-2 border-[#14161A] shadow-[3px_3px_0_#14161A] p-6 sm:p-7 border-t-4 border-t-[#2F7A5C] flex flex-col">
-              <div className="inline-flex items-center gap-1.5 self-start bg-[#2F7A5C] text-[#F6F5F1] px-2.5 py-1 border border-[#14161A] font-bold text-[9px] uppercase tracking-wider mb-4">
+            <div className="w-full bg-white border-2 border-[#14161A] shadow-[3px_3px_0_#14161A] p-6 sm:p-8 border-t-4 border-t-[#2F7A5C] flex flex-col items-center text-center">
+              <div className="inline-flex items-center gap-1.5 bg-[#2F7A5C] text-[#F6F5F1] px-2.5 py-1 border border-[#14161A] font-bold text-[9px] uppercase tracking-wider mb-4">
                 <CheckCircle2 size={11} />
                 <span>WEBMCP SPATIAL TOOLS</span>
               </div>
 
-              <h4 className="font-extrabold text-base text-[#14161A] mb-1.5">Direct Canvas Execution</h4>
-              <p className="text-xs text-[#14161A]/80 leading-relaxed font-medium mb-5">
+              <h4 className="font-extrabold text-base text-[#14161A] mb-2 text-center">Direct Canvas Execution</h4>
+              <p className="text-xs text-[#14161A]/80 leading-relaxed font-medium mb-5 text-center max-w-sm">
                 AI calls structured browser tools, mutating element coordinates and spacing live.
               </p>
 
-              <div className="border-t border-[#D8D5CC] pt-4 space-y-2.5 mt-auto text-xs">
-                <div className="flex items-start gap-2 text-[#14161A]">
+              <div className="border-t border-[#D8D5CC] pt-4 space-y-2.5 mt-auto text-xs w-full flex flex-col items-start px-2 sm:px-4">
+                <div className="flex items-start gap-2.5 text-[#14161A] text-left">
                   <Check size={14} className="text-[#2F7A5C] shrink-0 mt-0.5 font-bold" />
                   <span>Structured tools: <code className="bg-[#F6F5F1] border border-[#14161A] px-1.5 py-0.5 font-bold text-[11px]">flagIssue</code>, <code className="bg-[#F6F5F1] border border-[#14161A] px-1.5 py-0.5 font-bold text-[11px]">resizeElement</code></span>
                 </div>
-                <div className="flex items-start gap-2 text-[#14161A]">
+                <div className="flex items-start gap-2.5 text-[#14161A] text-left">
                   <Check size={14} className="text-[#2F7A5C] shrink-0 mt-0.5 font-bold" />
                   <span>Exact coordinate inspection via <code className="bg-[#F6F5F1] border border-[#14161A] px-1.5 py-0.5 font-bold text-[11px]">getCanvasState</code></span>
                 </div>
-                <div className="flex items-start gap-2 text-[#14161A]">
+                <div className="flex items-start gap-2.5 text-[#14161A] text-left">
                   <Check size={14} className="text-[#2F7A5C] shrink-0 mt-0.5 font-bold" />
                   <span>Changes reflow with sub-pixel precision</span>
                 </div>
