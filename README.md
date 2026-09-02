@@ -2,6 +2,9 @@
 
 Give your AI agent hands, not just words.
 
+**Live Application:** [https://critstudio.vercel.app/](https://critstudio.vercel.app/)  
+**Interactive Workspace:** [https://critstudio.vercel.app/workspace](https://critstudio.vercel.app/workspace)
+
 Crit Studio is a design-review workspace that exposes a live canvas as [WebMCP](https://github.com/webmcp-org) tools — so an AI agent doesn't just describe what's wrong with a design in chat, it flags, moves, resizes, and rebalances the actual layout, live, with exact spatial precision.
 
 Built for the OpenAI WebMCP Challenge 2026.
@@ -21,7 +24,7 @@ Every existing AI design-feedback tool works the same way: you show it a screen,
 3. **Watch it execute** — the agent calls WebMCP tools that flag issues, resize touch targets, rebalance spacing, and reflow the layout live on screen, with visible before/after changes.
 
 You can drive the canvas two ways:
-- **Built-in chat panel** — talks to an embedded LLM with tool-calling, wired to the exact same tool executors as the native path. Works out of the box, no external agent required.
+- **Built-in chat panel** — talks to an embedded LLM with function-calling (powered by OpenAI-compatible AgentRouter/OpenAI inference, with resilient deterministic fallback), wired to the exact same tool executors as the native path. Works out of the box, no external agent required.
 - **Native WebMCP host** — any WebMCP-compatible agent (e.g. Chrome with the experimental flag, or a ChatGPT in-browser agent) can discover and call the same tools directly via `navigator.modelContext`.
 
 ## WebMCP tools
@@ -39,13 +42,24 @@ Six tools, registered via `navigator.modelContext.registerTool()`:
 
 Tool descriptions are written to be explicit about when each should (and shouldn't) be used, so the agent doesn't pick the wrong tool for a given fix.
 
+## Key features
+
+- **Live WebMCP Spatial Tool Execution**: Real-time canvas mutations triggered via structured agent tool calls with sub-pixel precision.
+- **1-Click Export Design Audit Report**: Downloadable design critique summaries in formatted **Markdown (`.md`)** and structured **JSON (`.json`)** containing element inventories, flagged issue logs, and chronological WebMCP tool execution trails.
+- **Live WCAG 2.1 Accessibility & Touch Target Overlay (`WCAG Grid`)**:
+  - Exact mathematical relative luminance contrast ratio badges (e.g. `1.4:1 FAIL` in redline vs `18.1:1 PASS` in green confirm ink).
+  - Dashed `44×44px` minimum tap-target bounding boxes around undersized interactive buttons and nav items.
+- **Visual Before / After Diff Mode (`Diff Mode`)**: Side-by-side snapshot comparison between initial flawed baseline and resolved state.
+- **WebMCP Tool Log Console Drawer (`Console`)**: Expandable inspection drawer rendering real-time execution logs for every tool call.
+- **Framed Workspace with Outer Breathing Room**: Consistent 24px uniform outer margin framing the full three-panel studio shell.
+
 ## Tech stack
 
 - **Next.js 16 (App Router)** + **TypeScript**
 - **Zustand** — single source of truth for canvas state; every tool (manual editing, native WebMCP, and the chat panel) reads and writes the same store
-- **WebMCP** via `navigator.modelContext`, with a polyfill fallback for browsers without native support
+- **WebMCP** via `navigator.modelContext`, with polyfill fallback for browsers without native support
 - **DOM-based canvas** (absolutely-positioned elements, not `<canvas>`/WebGL)
-- One Next.js Route Handler (`/api/chat`) for the embedded chat's LLM call — API key stays server-side
+- **AgentRouter / OpenAI API Integration** — route handler (`/api/chat`) for real model inference and function calling, with seamless fallback for guaranteed demo reliability
 
 ## Running locally
 
@@ -58,21 +72,22 @@ Open [http://localhost:3000](http://localhost:3000/) — the landing page. Click
 
 ## Environment variables
 
-Crit Studio's embedded design reviewer runs zero-config out of the box with an autonomous spatial planning engine — **no external API keys are required** to run locally or deploy to Vercel.
-
-If configuring an optional custom upstream model provider:
+Create a `.env.local` file for local development (or configure in the Vercel Dashboard for production):
 
 ```env
-# Optional (leave unset for zero-config autonomous mode)
-LLM_API_KEY=your_key_here
+AGENTROUTER_API_KEY=your_key_here
+AGENTROUTER_BASE_URL=https://agentrouter.org/v1
+AGENTROUTER_MODEL=deepseek-v4-flash
 ```
+
+*Note:* If no key is configured, Crit Studio automatically runs in zero-config autonomous mode using its built-in deterministic spatial engine.
 
 ## Testing native WebMCP support
 
 `navigator.modelContext` is an early-preview browser API. To test the native (non-chat-panel) path:
 
 - **Chrome**: enable `chrome://flags/#enable-experimental-web-platform-features`, restart, then visit the workspace and connect a WebMCP-aware agent/extension.
-- **ChatGPT in-browser agent**: if available in your environment, visit the workspace URL and ask it to review the canvas — it should discover the six registered tools automatically.
+- **ChatGPT in-browser agent**: visit the workspace URL and ask it to review the canvas — it discovers the six registered tools automatically.
 
 If native support isn't available in your browser, the app falls back to the `@mcp-b/global` polyfill automatically, and the built-in chat panel works regardless.
 
@@ -80,14 +95,26 @@ If native support isn't available in your browser, the app falls back to the `@m
 
 ```text
 app/
-  layout.tsx        # root layout, font + global styles
-  page.tsx          # landing page
+  layout.tsx        # root layout, font pairing + global styles
+  page.tsx          # marketing landing page with interactive canvas preview
   workspace/
-    page.tsx        # the interactive workspace
+    page.tsx        # interactive design workspace shell
   api/
     chat/
-      route.ts      # LLM route handler for the embedded chat panel
-globals.css         # design token system
+      route.ts      # LLM route handler with real function calling + fallback
+src/
+  components/
+    Canvas/         # drafting canvas, grid ticks, elements, WCAG overlay
+    Workspace/      # left toolbox, right dock, AI chat panel, properties inspector
+    AgentPanel/     # agent cursor indicator, tool log simulator console
+    Annotations/    # proofreader flags, leader lines, pinned margin notes
+  store/
+    useCanvasStore  # unified Zustand store for manual edits & WebMCP tools
+  utils/
+    exportAuditReport.ts  # Markdown & JSON session audit export engine
+    wcagMath.ts           # WCAG 2.1 relative luminance & contrast ratio math
+    pinCollision.ts       # collision-free placement for margin notes
+globals.css         # Neobrutalist design token system
 ```
 
 ## Design system
@@ -103,14 +130,12 @@ A project-grounded neobrutalist visual language — hard borders, flat colors, o
 --mark: #F2C94C;     /* highlighter accent — CTAs only */
 ```
 
-Typography: Bricolage Grotesque throughout, using weight and optical-size contrast rather than a second typeface to distinguish display and body text.
-
-## What's next
-
-- Real image/reference import for tracing over existing screenshots
-- A downloadable critique summary (markdown/JSON export of the full flag/fix history)
-- Broader accessibility checks beyond contrast ratio
+Typography pairing:
+- **Headings, stamps, buttons:** `Bricolage Grotesque`
+- **Body text, descriptions, logs:** `Plus Jakarta Sans`
 
 ## Submission
 
-OpenAI WebMCP Challenge 2026 — built solo. See `/workspace` for the live demo, or the deployed link in the submission form.
+OpenAI WebMCP Challenge 2026 — built solo.
+- **Live Demo:** [https://critstudio.vercel.app/](https://critstudio.vercel.app/)
+- **Workspace:** [https://critstudio.vercel.app/workspace](https://critstudio.vercel.app/workspace)
