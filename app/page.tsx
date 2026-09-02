@@ -8,14 +8,14 @@ export default function LandingPage() {
       {/* 1. Header Navigation */}
       <header className="w-full border-b-2 border-[#14161A] bg-[#F6F5F1] sticky top-0 z-50">
         <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <span className="font-extrabold text-base tracking-tight text-[#14161A]">CRIT STUDIO</span>
-            <span className="text-xs text-[#6B7280] font-bold border-l-2 border-[#14161A] pl-3 hidden sm:inline">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <span className="font-extrabold text-sm sm:text-base tracking-tight text-[#14161A]">CRIT STUDIO</span>
+            <span className="text-xs text-[#6B7280] font-bold border-l-2 border-[#14161A] pl-2.5 sm:pl-3 hidden xs:inline">
               WebMCP Design Canvas
             </span>
           </div>
 
-          <Link href="/workspace" className="neo-btn-primary text-xs min-h-[36px]">
+          <Link href="/workspace" className="neo-btn-primary text-xs px-3.5 py-2 min-h-[36px]">
             <span>Launch Workspace</span>
             <ArrowRight size={13} />
           </Link>
@@ -23,46 +23,46 @@ export default function LandingPage() {
       </header>
 
       {/* 2. Hero Section */}
-      <section className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-24 pb-20 sm:pb-28 text-center flex flex-col items-center">
+      <section className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-16 md:pt-24 pb-14 sm:pb-20 md:pb-28 text-center flex flex-col items-center">
         {/* Submission Badge */}
-        <div className="inline-flex items-center gap-2 bg-[#F6F5F1] border-2 border-[#14161A] shadow-[2px_2px_0_#14161A] px-3.5 py-1 mb-6 text-[11px] font-bold uppercase tracking-wider text-[#14161A]">
-          <Zap size={13} className="fill-[#F2C94C] text-[#14161A]" />
+        <div className="inline-flex items-center gap-2 bg-[#F6F5F1] border-2 border-[#14161A] shadow-[2px_2px_0_#14161A] px-3 py-1 mb-5 sm:mb-6 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-[#14161A]">
+          <Zap size={12} className="fill-[#F2C94C] text-[#14161A] shrink-0" />
           <span>WebMCP Challenge 2026 Submission</span>
         </div>
 
-        {/* Hero Title */}
-        <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-[#14161A] leading-[1.1] mb-6 max-w-3xl">
+        {/* Hero Title with Clamp Fluid Typography */}
+        <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-[#14161A] leading-[1.12] mb-4 sm:mb-6 max-w-3xl">
           Give your AI agent hands, not just words.
         </h1>
 
         {/* Hero Subhead */}
-        <p className="text-sm sm:text-base text-[#6B7280] max-w-xl mx-auto leading-relaxed mb-10 font-medium">
+        <p className="text-sm sm:text-base md:text-lg text-[#6B7280] max-w-xl mx-auto leading-relaxed mb-8 sm:mb-10 font-medium">
           Crit Studio exposes design canvases as WebMCP tools so AI agents can inspect coordinates, flag visual flaws, resize touch targets, and rebalance layouts live on screen.
         </p>
 
-        {/* CTA Button Row */}
-        <div className="flex flex-wrap items-center justify-center gap-4 mb-16 sm:mb-20">
-          <Link href="/workspace" className="neo-btn-primary text-sm px-6 py-3 min-h-[44px]">
+        {/* CTA Button Row — Full-width on Mobile, Inline on Tablet/Desktop */}
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto max-w-md sm:max-w-none mb-12 sm:mb-16 md:mb-20">
+          <Link href="/workspace" className="neo-btn-primary text-sm px-6 py-3.5 min-h-[48px] w-full sm:w-auto text-center justify-center">
             <span>Open Interactive Workspace</span>
             <ArrowRight size={15} />
           </Link>
 
-          <a href="#how-it-works" className="neo-btn text-sm px-6 py-3 min-h-[44px]">
+          <a href="#how-it-works" className="neo-btn text-sm px-6 py-3.5 min-h-[48px] w-full sm:w-auto text-center justify-center">
             <span>See How It Works</span>
           </a>
         </div>
 
-        {/* Canvas Preview Container — Fixed Aspect Ratio 800/520 with Strict Containment */}
-        <div className="w-full max-w-3xl mx-auto border-2 border-[#14161A] shadow-[4px_4px_0_#14161A] sm:shadow-[6px_6px_0_#14161A] bg-white overflow-hidden text-left">
+        {/* Canvas Preview Container — 800/520 Aspect Ratio strictly contained with zero overflow */}
+        <div className="w-full max-w-3xl mx-auto border-2 border-[#14161A] shadow-[3px_3px_0_#14161A] sm:shadow-[6px_6px_0_#14161A] bg-white overflow-hidden text-left">
           {/* Chrome Top Bar */}
-          <div className="h-9 px-3 sm:px-4 bg-[#F6F5F1] border-b-2 border-[#14161A] flex items-center justify-between font-bold text-xs">
+          <div className="h-8 sm:h-9 px-3 sm:px-4 bg-[#F6F5F1] border-b-2 border-[#14161A] flex items-center justify-between font-bold text-[11px] sm:text-xs">
             <div className="flex items-center gap-2">
               <div className="w-2.5 h-2.5 bg-[#F2C94C] border border-[#14161A]" />
-              <span className="font-bold text-[11px] text-[#14161A] tracking-wider uppercase">
+              <span className="font-bold text-[10px] sm:text-[11px] text-[#14161A] tracking-wider uppercase truncate max-w-[200px] sm:max-w-none">
                 CANVAS_PREVIEW // ACME_LANDING.FIG
               </span>
             </div>
-            <span className="text-[10px] text-[#6B7280] font-bold border border-[#14161A] bg-white px-1.5 py-0.5">
+            <span className="text-[9px] sm:text-[10px] text-[#6B7280] font-bold border border-[#14161A] bg-white px-1.5 py-0.5 shrink-0">
               800 x 520 PX
             </span>
           </div>
@@ -219,12 +219,12 @@ export default function LandingPage() {
       </div>
 
       {/* 3. How It Works Section */}
-      <section id="how-it-works" className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
-        <div className="text-center mb-14 sm:mb-18">
-          <div className="inline-block bg-[#F6F5F1] border-2 border-[#14161A] shadow-[2px_2px_0_#14161A] px-3 py-1 mb-4 text-[10px] font-bold uppercase tracking-wider text-[#14161A]">
+      <section id="how-it-works" className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20 md:py-28">
+        <div className="text-center mb-10 sm:mb-14 md:mb-18">
+          <div className="inline-block bg-[#F6F5F1] border-2 border-[#14161A] shadow-[2px_2px_0_#14161A] px-3 py-1 mb-3 sm:mb-4 text-[10px] font-bold uppercase tracking-wider text-[#14161A]">
             WORKFLOW
           </div>
-          <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-[#14161A] mb-4">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-[#14161A] mb-3 sm:mb-4">
             How Crit Studio Works
           </h2>
           <p className="text-sm sm:text-base text-[#6B7280] max-w-lg mx-auto font-medium leading-relaxed">
@@ -232,7 +232,8 @@ export default function LandingPage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+        {/* 1 Column on Mobile (<768px), 3 Columns on Tablet/Desktop (≥768px) */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 w-full">
           {[
             {
               step: '1',
@@ -252,13 +253,13 @@ export default function LandingPage() {
           ].map((item) => (
             <div
               key={item.step}
-              className="bg-[#F6F5F1] border-2 border-[#14161A] shadow-[3px_3px_0_#14161A] sm:shadow-[4px_4px_0_#14161A] p-6 sm:p-8 flex flex-col items-center text-center"
+              className="w-full bg-[#F6F5F1] border-2 border-[#14161A] shadow-[3px_3px_0_#14161A] sm:shadow-[4px_4px_0_#14161A] p-6 sm:p-8 flex flex-col items-center text-center"
             >
               {/* Step Digit in Plain Bordered Square */}
-              <div className="w-8 h-8 border-2 border-[#14161A] bg-white flex items-center justify-center font-extrabold text-xs mb-5 text-[#14161A]">
+              <div className="w-8 h-8 border-2 border-[#14161A] bg-white flex items-center justify-center font-extrabold text-xs mb-4 sm:mb-5 text-[#14161A]">
                 {item.step}
               </div>
-              <h3 className="font-extrabold text-lg text-[#14161A] mb-2.5">{item.title}</h3>
+              <h3 className="font-extrabold text-base sm:text-lg text-[#14161A] mb-2">{item.title}</h3>
               <p className="text-xs sm:text-[13px] text-[#6B7280] leading-relaxed font-medium">{item.desc}</p>
             </div>
           ))}
@@ -270,13 +271,13 @@ export default function LandingPage() {
         <div className="border-t border-[#D8D5CC]" />
       </div>
 
-      {/* 4. Why WebMCP Section (Redesigned & Spacious Comparison) */}
-      <section className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
-        <div className="text-center mb-14 sm:mb-18">
-          <div className="inline-block bg-[#F6F5F1] border-2 border-[#14161A] shadow-[2px_2px_0_#14161A] px-3 py-1 mb-4 text-[10px] font-bold uppercase tracking-wider text-[#14161A]">
+      {/* 4. Why WebMCP Section */}
+      <section className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20 md:py-28">
+        <div className="text-center mb-10 sm:mb-14 md:mb-18">
+          <div className="inline-block bg-[#F6F5F1] border-2 border-[#14161A] shadow-[2px_2px_0_#14161A] px-3 py-1 mb-3 sm:mb-4 text-[10px] font-bold uppercase tracking-wider text-[#14161A]">
             PARADIGM SHIFT
           </div>
-          <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-[#14161A] mb-4">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-[#14161A] mb-3 sm:mb-4">
             Why WebMCP?
           </h2>
           <p className="text-sm sm:text-base text-[#6B7280] max-w-lg mx-auto leading-relaxed font-medium">
@@ -284,15 +285,16 @@ export default function LandingPage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        {/* 1 Column on Mobile (<768px), 2 Columns on Tablet/Desktop (≥768px) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 w-full max-w-4xl mx-auto">
           {/* Traditional Chat / Vision Card */}
-          <div className="bg-[#F6F5F1] border-2 border-[#14161A] shadow-[4px_4px_0_#14161A] p-6 sm:p-8 border-t-4 border-t-[#C1272D] flex flex-col text-left">
-            <div className="inline-flex items-center gap-1.5 self-start bg-[#C1272D] text-[#F6F5F1] px-2.5 py-1 border border-[#14161A] font-bold text-[10px] uppercase tracking-wider mb-5">
+          <div className="w-full bg-[#F6F5F1] border-2 border-[#14161A] shadow-[3px_3px_0_#14161A] sm:shadow-[4px_4px_0_#14161A] p-6 sm:p-8 border-t-4 border-t-[#C1272D] flex flex-col text-left">
+            <div className="inline-flex items-center gap-1.5 self-start bg-[#C1272D] text-[#F6F5F1] px-2.5 py-1 border border-[#14161A] font-bold text-[10px] uppercase tracking-wider mb-4 sm:mb-5">
               <ShieldAlert size={13} />
               <span>TRADITIONAL CHAT / VISION</span>
             </div>
 
-            <h3 className="font-extrabold text-lg text-[#14161A] mb-2">Passive Text Descriptions</h3>
+            <h3 className="font-extrabold text-base sm:text-lg text-[#14161A] mb-2">Passive Text Descriptions</h3>
             <p className="text-xs sm:text-[13px] text-[#6B7280] leading-relaxed font-medium mb-6">
               AI writes paragraphs of critique in a chat window. The designer is forced to manually translate words into pixel adjustments.
             </p>
@@ -314,13 +316,13 @@ export default function LandingPage() {
           </div>
 
           {/* WebMCP Spatial Tools Card */}
-          <div className="bg-[#F6F5F1] border-2 border-[#14161A] shadow-[4px_4px_0_#14161A] p-6 sm:p-8 border-t-4 border-t-[#2F7A5C] flex flex-col text-left">
-            <div className="inline-flex items-center gap-1.5 self-start bg-[#2F7A5C] text-[#F6F5F1] px-2.5 py-1 border border-[#14161A] font-bold text-[10px] uppercase tracking-wider mb-5">
+          <div className="w-full bg-[#F6F5F1] border-2 border-[#14161A] shadow-[3px_3px_0_#14161A] sm:shadow-[4px_4px_0_#14161A] p-6 sm:p-8 border-t-4 border-t-[#2F7A5C] flex flex-col text-left">
+            <div className="inline-flex items-center gap-1.5 self-start bg-[#2F7A5C] text-[#F6F5F1] px-2.5 py-1 border border-[#14161A] font-bold text-[10px] uppercase tracking-wider mb-4 sm:mb-5">
               <CheckCircle2 size={13} />
               <span>WEBMCP SPATIAL TOOLS</span>
             </div>
 
-            <h3 className="font-extrabold text-lg text-[#14161A] mb-2">Direct Canvas Execution</h3>
+            <h3 className="font-extrabold text-base sm:text-lg text-[#14161A] mb-2">Direct Canvas Execution</h3>
             <p className="text-xs sm:text-[13px] text-[#14161A]/80 leading-relaxed font-medium mb-6">
               AI calls structured tools in browser memory, mutating element coordinates, dimensions, and spacing with sub-pixel precision.
             </p>
@@ -349,21 +351,21 @@ export default function LandingPage() {
       </div>
 
       {/* 5. Closing CTA */}
-      <section className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 text-center">
-        <h3 className="text-2xl sm:text-4xl font-extrabold text-[#14161A] mb-4">
+      <section className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20 md:py-28 text-center">
+        <h3 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#14161A] mb-3 sm:mb-4">
           Ready to review your layout?
         </h3>
         <p className="text-sm sm:text-base text-[#6B7280] mb-8 max-w-md mx-auto font-medium leading-relaxed">
           Open the workspace, build a mockup, and let the AI agent critique and fix your design in real-time.
         </p>
-        <Link href="/workspace" className="neo-btn-primary text-sm px-8 py-3.5 min-h-[44px]">
+        <Link href="/workspace" className="neo-btn-primary text-sm px-8 py-3.5 min-h-[48px] w-full sm:w-auto inline-flex justify-center">
           <span>Launch Interactive Workspace</span>
           <ArrowRight size={15} />
         </Link>
       </section>
 
       {/* 6. Footer */}
-      <footer className="w-full border-t border-[#D8D5CC] bg-[#F6F5F1] py-10 mt-auto">
+      <footer className="w-full border-t border-[#D8D5CC] bg-[#F6F5F1] py-8 sm:py-10 mt-auto">
         <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#6B7280]">
           <div className="flex items-center gap-2">
             <span className="font-extrabold text-[#14161A]">CRIT STUDIO</span>
