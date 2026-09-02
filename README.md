@@ -58,13 +58,14 @@ Open [http://localhost:3000](http://localhost:3000/) — the landing page. Click
 
 ## Environment variables
 
-Create a `.env.local` file:
+Crit Studio's embedded design reviewer runs zero-config out of the box with an autonomous spatial planning engine — **no external API keys are required** to run locally or deploy to Vercel.
+
+If configuring an optional custom upstream model provider:
 
 ```env
+# Optional (leave unset for zero-config autonomous mode)
 LLM_API_KEY=your_key_here
 ```
-
-Required for the embedded chat panel (`/api/chat`). The native WebMCP tool registration works without it.
 
 ## Testing native WebMCP support
 
