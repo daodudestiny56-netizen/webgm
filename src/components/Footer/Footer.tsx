@@ -54,7 +54,7 @@ export const Footer: React.FC = () => {
       <div className="flex flex-col sm:flex-row items-center justify-between border-t border-[#D8D5CC] pt-2 text-[11px] text-[#6B7280] gap-2 font-medium">
         <div className="flex items-center gap-2">
           <Code2 size={13} className="text-[#14161A]" />
-          <span className="font-bold text-[#14161A]">Crit Studio // Next.js App Router // WebMCP Challenge 2026</span>
+          <span className="font-bold text-[#14161A]">Crit Studio // Next.js App Router // Autonomous AI Design Review Workspace</span>
         </div>
         <div className="flex items-center gap-3">
           <span>React 19 + TypeScript + Zustand</span>

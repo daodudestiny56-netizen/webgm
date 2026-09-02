@@ -29,10 +29,10 @@ export default function LandingPage() {
 
         {/* 2. Hero Box Container */}
         <section className="w-full bg-white border-2 border-[#14161A] shadow-[4px_4px_0_#14161A] p-8 sm:p-12 md:p-14 text-center flex flex-col items-center">
-          {/* Submission Badge */}
+          {/* Product Badge */}
           <div className="inline-flex items-center gap-2 bg-[#F6F5F1] border-2 border-[#14161A] shadow-[2px_2px_0_#14161A] px-3.5 py-1.5 mb-6 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-[#14161A]">
             <Zap size={13} className="fill-[#F2C94C] text-[#14161A]" />
-            <span>WebMCP Challenge 2026 Submission</span>
+            <span>WebMCP Canvas Engine v1.0</span>
           </div>
 
           {/* Title */}
@@ -381,7 +381,7 @@ export default function LandingPage() {
           <div className="flex items-center gap-2">
             <span className="font-extrabold text-[#14161A]">CRIT STUDIO</span>
             <span className="text-[#14161A] font-bold">•</span>
-            <span>WebMCP Challenge 2026</span>
+            <span>WebMCP Design Canvas Engine</span>
           </div>
 
           <div className="flex items-center gap-3 font-semibold text-[#14161A]">

@@ -161,15 +161,15 @@ export const AIChatPanel: React.FC = () => {
       {/* Quick Prompts Suggestions */}
       <div className="p-2 border-t-2 border-[#14161A] bg-white flex flex-wrap justify-center gap-1.5">
         {[
-          { label: '"What\'s wrong with this?"', prompt: "What's wrong with this?" },
-          { label: '"Is CTA accessible?"', prompt: 'Is the CTA button accessible?' },
-          { label: '"Fix nav spacing"', prompt: 'Fix spacing on the nav bar' },
-          { label: '"Why flag heading?"', prompt: 'Why did you flag the heading?' },
+          { label: '🔍 Audit Layout Flaws', prompt: "What's wrong with this?" },
+          { label: '♿ Check CTA Accessibility', prompt: 'Is the CTA button accessible?' },
+          { label: '📐 Rebalance Nav Spacing', prompt: 'Fix spacing on the nav bar' },
+          { label: '💡 Why Flag Heading?', prompt: 'Why did you flag the heading?' },
         ].map((item) => (
           <button
             key={item.prompt}
             onClick={() => handleSendMessage(item.prompt)}
-            className="text-[10px] bg-[#F6F5F1] hover:bg-[#F2C94C] text-[#14161A] border-2 border-[#14161A] shadow-[1px_1px_0_#14161A] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none px-2 py-1 font-bold transition-transform cursor-pointer text-center"
+            className="text-[10px] bg-[#F6F5F1] hover:bg-[#F2C94C] text-[#14161A] border-2 border-[#14161A] shadow-[1px_1px_0_#14161A] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none px-2.5 py-1 font-extrabold transition-transform cursor-pointer text-center"
           >
             {item.label}
           </button>
