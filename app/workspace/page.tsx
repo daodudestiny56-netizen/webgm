@@ -34,7 +34,7 @@ export default function WorkspacePage() {
   const isTablet = windowWidth > 640 && windowWidth < 1024;
 
   return (
-    <div className="flex flex-col h-screen w-screen bg-[#F6F5F1] font-sans text-xs overflow-hidden">
+    <div className="flex flex-col h-screen w-full max-w-full bg-[#F6F5F1] font-sans text-xs overflow-hidden">
       {/* Top Bar */}
       <header className="h-11 px-3 sm:px-4 bg-[#F6F5F1] border-b-2 border-[#14161A] flex items-center justify-between font-sans select-none shrink-0">
         <div className="flex items-center gap-2 sm:gap-3">
