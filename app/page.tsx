@@ -6,14 +6,14 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen w-full bg-[#F6F5F1] text-[#14161A] font-sans flex flex-col items-center">
       {/* 
-        Centered Main Container:
-        - Max-width max-w-5xl (1024px) centered with mx-auto
-        - Generous outer padding (px-4 sm:px-6 lg:px-8, py-8 sm:py-14)
-        - Increased vertical section spacing (space-y-14 sm:space-y-20)
+        Main Layout Column:
+        - Capped at max-w-5xl (1024px) centered with mx-auto
+        - Explicit Flexbox Gap (gap-12 sm:gap-16 md:gap-20) guarantees 48px-80px clear vertical spacing between sections
+        - Flanked by warm --paper background
       */}
-      <main className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-14 space-y-14 sm:space-y-20 flex-1 flex flex-col">
+      <main className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-14 flex flex-col gap-12 sm:gap-16 md:gap-20 flex-1">
         
-        {/* 1. Header Navigation — Generous inner padding away from borders */}
+        {/* 1. Header Navigation Bar */}
         <header className="w-full bg-[#F6F5F1] border-2 border-[#14161A] shadow-[3px_3px_0_#14161A] px-6 sm:px-8 py-4 sm:py-4.5 flex items-center justify-between">
           <div className="flex items-center gap-3 sm:gap-4">
             <span className="font-extrabold text-sm sm:text-base tracking-tight text-[#14161A]">CRIT STUDIO</span>
@@ -28,7 +28,7 @@ export default function LandingPage() {
           </Link>
         </header>
 
-        {/* 2. Hero Box Container — Spacious interior padding */}
+        {/* 2. Hero Box Container */}
         <section className="w-full bg-white border-2 border-[#14161A] shadow-[4px_4px_0_#14161A] p-8 sm:p-12 md:p-14 text-center flex flex-col items-center">
           {/* Submission Badge */}
           <div className="inline-flex items-center gap-2 bg-[#F6F5F1] border-2 border-[#14161A] shadow-[2px_2px_0_#14161A] px-3.5 py-1.5 mb-6 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-[#14161A]">
@@ -36,12 +36,12 @@ export default function LandingPage() {
             <span>WebMCP Challenge 2026 Submission</span>
           </div>
 
-          {/* Fluid Responsive Title */}
+          {/* Title */}
           <h1 className="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-[#14161A] leading-[1.15] mb-5 max-w-2xl">
             Give your AI agent hands,<br className="hidden sm:inline" /> not just words.
           </h1>
 
-          {/* Hero Subhead */}
+          {/* Subhead */}
           <p className="text-xs sm:text-sm md:text-base text-[#6B7280] max-w-lg mx-auto leading-relaxed mb-9 font-medium">
             Crit Studio exposes design canvases as WebMCP tools so AI agents can inspect coordinates, flag visual flaws, resize touch targets, and rebalance layouts live on screen.
           </p>
@@ -59,8 +59,8 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* 3. Three Simple Steps Section — Expanded spacing */}
-        <section id="how-it-works" className="w-full space-y-4">
+        {/* 3. Three Simple Steps Section */}
+        <section id="how-it-works" className="w-full flex flex-col gap-4">
           <div className="text-[11px] font-extrabold uppercase tracking-wider text-[#14161A] px-1">
             Three Simple Steps to Review Any Canvas
           </div>
@@ -99,9 +99,9 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* 4. Canvas Review Document Preview Card — Generous interior padding */}
-        <section id="canvas-preview" className="w-full space-y-4">
-          {/* Top Bar Header */}
+        {/* 4. Canvas Review Document Preview Card */}
+        <section id="canvas-preview" className="w-full flex flex-col gap-4">
+          {/* Section Header Bar */}
           <div className="w-full bg-[#14161A] text-white px-5 py-3 border-2 border-[#14161A] shadow-[3px_3px_0_#14161A] flex items-center justify-between">
             <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider">
               <Sparkles size={13} className="text-[#F2C94C]" />
@@ -115,10 +115,10 @@ export default function LandingPage() {
             </Link>
           </div>
 
-          {/* Report Document Frame */}
-          <div className="w-full bg-white border-2 border-[#14161A] shadow-[4px_4px_0_#14161A] p-6 sm:p-8 overflow-hidden">
-            {/* Header inside Report */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-5 mb-5 border-b-2 border-[#14161A] gap-3">
+          {/* Report Document Box */}
+          <div className="w-full bg-white border-2 border-[#14161A] shadow-[4px_4px_0_#14161A] p-6 sm:p-8 overflow-hidden flex flex-col gap-6">
+            {/* Inner Header */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-5 border-b-2 border-[#14161A] gap-3">
               <div>
                 <div className="flex items-center gap-2.5">
                   <h2 className="text-base sm:text-xl font-extrabold text-[#14161A]">acme-landing.fig</h2>
@@ -139,7 +139,7 @@ export default function LandingPage() {
             </div>
 
             {/* Vector Canvas Preview Box */}
-            <div className="w-full aspect-[800/440] bg-[#F6F5F1] border-2 border-[#14161A] overflow-hidden relative mb-6">
+            <div className="w-full aspect-[800/440] bg-[#F6F5F1] border-2 border-[#14161A] overflow-hidden relative">
               <svg
                 viewBox="0 0 800 440"
                 className="w-full h-full block select-none"
@@ -300,7 +300,7 @@ export default function LandingPage() {
         </section>
 
         {/* 5. Why WebMCP Comparison Section */}
-        <section className="w-full space-y-4">
+        <section className="w-full flex flex-col gap-4">
           <div className="text-[11px] font-extrabold uppercase tracking-wider text-[#14161A] px-1">
             Why WebMCP? Spatial Tools vs Passive Chat
           </div>
@@ -365,7 +365,7 @@ export default function LandingPage() {
         </section>
 
         {/* 6. Closing CTA Box */}
-        <section className="w-full bg-white border-2 border-[#14161A] shadow-[4px_4px_0_#14161A] p-8 sm:p-12 text-center">
+        <section className="w-full bg-white border-2 border-[#14161A] shadow-[4px_4px_0_#14161A] p-8 sm:p-12 text-center flex flex-col items-center">
           <h3 className="text-xl sm:text-3xl font-extrabold text-[#14161A] mb-3">
             Ready to review your layout?
           </h3>
@@ -378,7 +378,7 @@ export default function LandingPage() {
           </Link>
         </section>
 
-        {/* 7. Footer Bar — Spacious inner margins */}
+        {/* 7. Footer Bar */}
         <footer className="w-full bg-[#F6F5F1] border-2 border-[#14161A] shadow-[2px_2px_0_#14161A] px-6 sm:px-8 py-4 sm:py-5 flex flex-col sm:flex-row items-center justify-between gap-3.5 text-xs text-[#6B7280]">
           <div className="flex items-center gap-2">
             <span className="font-extrabold text-[#14161A]">CRIT STUDIO</span>
