@@ -375,24 +375,6 @@ export default function LandingPage() {
             <ArrowRight size={14} />
           </Link>
         </section>
-
-        {/* 7. Footer Bar */}
-        <footer className="w-full bg-[#F6F5F1] border-2 border-[#14161A] shadow-[2px_2px_0_#14161A] px-6 sm:px-8 py-4 sm:py-5 flex flex-col sm:flex-row items-center justify-between gap-3.5 text-xs text-[#6B7280]">
-          <div className="flex items-center gap-2">
-            <span className="font-extrabold text-[#14161A]">CRIT STUDIO</span>
-            <span className="text-[#14161A] font-bold">•</span>
-            <span>WebMCP Design Canvas Engine</span>
-          </div>
-
-          <div className="flex items-center gap-3 font-semibold text-[#14161A]">
-            <span>Next.js 16 + TypeScript + Zustand</span>
-            <span className="text-[#D8D5CC]">|</span>
-            <span className="border border-[#14161A] bg-[#F2C94C] px-2 py-0.5 text-[10px] font-extrabold shadow-[1px_1px_0_#14161A]">
-              6 TOOLS REGISTERED
-            </span>
-          </div>
-        </footer>
-
       </main>
     </div>
   );
