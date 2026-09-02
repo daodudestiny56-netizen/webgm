@@ -33,7 +33,7 @@ export default function WorkspacePage() {
   const isTablet = windowWidth > 640 && windowWidth < 1024;
 
   return (
-    <div className="h-screen w-screen max-w-full bg-[#F6F5F1] p-3 sm:p-4 md:p-5 lg:p-6 overflow-hidden flex flex-col box-border font-sans text-xs select-none">
+    <div className="workspace-outer-frame h-screen w-screen max-w-full bg-[#F6F5F1] p-3 sm:p-4 md:p-5 lg:p-6 overflow-hidden flex flex-col box-border font-sans text-xs select-none">
       {/* Framed Workspace Shell Unit with Neobrutalist border & offset shadow */}
       <div className="flex-1 min-h-0 flex flex-col w-full h-full border-2 border-[#14161A] shadow-[4px_4px_0_#14161A] bg-[#F6F5F1] overflow-hidden relative">
         {/* Top Professional App Bar */}
