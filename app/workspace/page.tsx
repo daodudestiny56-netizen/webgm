@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useCanvasStore } from '@/store/useCanvasStore';
 import { LeftToolbox } from '@/components/Workspace/LeftToolbox';
@@ -8,13 +8,16 @@ import { Canvas } from '@/components/Canvas/Canvas';
 import { RightDock } from '@/components/Workspace/RightDock';
 import { AgentSimulator } from '@/components/AgentPanel/AgentSimulator';
 import { registerWebMCPTools } from '@/webmcp/registerWebMCPTools';
-import { RotateCcw, Columns, Terminal, Home, Layout, Sliders, MessageSquare, Bot, Sparkles } from 'lucide-react';
+import { generateAuditReportMarkdown, generateAuditReportJson, triggerFileDownload } from '@/utils/exportAuditReport';
+import { RotateCcw, Columns, Terminal, Home, Layout, Sliders, MessageSquare, Bot, Sparkles, Download, ChevronDown, FileText, Code2 } from 'lucide-react';
 
 export default function WorkspacePage() {
   const { resetToFlawedMockup, toggleBeforeAfter, isBeforeAfterMode, loadExampleLayout } = useCanvasStore();
   const [isSimulatorOpen, setIsSimulatorOpen] = useState(false);
   const [mobileTab, setMobileTab] = useState<'canvas' | 'toolbox' | 'dock'>('canvas');
   const [windowWidth, setWindowWidth] = useState<number>(1280);
+  const [isExportMenuOpen, setIsExportMenuOpen] = useState(false);
+  const exportMenuRef = useRef<HTMLDivElement>(null);
 
   // Client-side only WebMCP tool registration on mount
   useEffect(() => {
@@ -28,6 +31,38 @@ export default function WorkspacePage() {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  // Close export dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (exportMenuRef.current && !exportMenuRef.current.contains(e.target as Node)) {
+        setIsExportMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Export Audit Report (Markdown or JSON)
+  const handleExport = (format: 'markdown' | 'json') => {
+    const state = useCanvasStore.getState();
+    const sessionData = {
+      elements: state.elements,
+      flags: state.flags,
+      annotations: state.annotations,
+      toolLogs: state.toolLogs,
+    };
+
+    const dateStr = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+    if (format === 'markdown') {
+      const content = generateAuditReportMarkdown(sessionData);
+      triggerFileDownload(content, `crit-studio-audit-${dateStr}.md`, 'text/markdown');
+    } else {
+      const content = generateAuditReportJson(sessionData);
+      triggerFileDownload(content, `crit-studio-audit-${dateStr}.json`, 'application/json');
+    }
+    setIsExportMenuOpen(false);
+  };
 
   const isMobile = windowWidth <= 640;
   const isTablet = windowWidth > 640 && windowWidth < 1024;
@@ -55,6 +90,39 @@ export default function WorkspacePage() {
 
           {/* Action Controls */}
           <div className="flex items-center gap-2 sm:gap-2.5">
+            {/* Feature 1: Export Audit Button with Dropdown */}
+            <div className="relative" ref={exportMenuRef}>
+              <button
+                onClick={() => setIsExportMenuOpen(!isExportMenuOpen)}
+                className="neo-btn text-xs px-3 py-1.5 flex items-center gap-1.5 font-bold hover:bg-[#F2C94C]"
+                title="Export design audit report"
+              >
+                <Download size={13} />
+                <span className="hidden sm:inline">Export Audit</span>
+                <ChevronDown size={11} className={isExportMenuOpen ? 'rotate-180 transition-transform' : 'transition-transform'} />
+              </button>
+
+              {isExportMenuOpen && (
+                <div className="absolute right-0 mt-1.5 w-44 bg-white border-2 border-[#14161A] shadow-[3px_3px_0_#14161A] z-50 flex flex-col py-1 font-bold text-xs">
+                  <button
+                    onClick={() => handleExport('markdown')}
+                    className="px-3 py-2 text-left flex items-center gap-2 hover:bg-[#F2C94C] text-[#14161A] transition-colors"
+                  >
+                    <FileText size={13} />
+                    <span>Markdown (.md)</span>
+                  </button>
+                  <div className="border-t border-[#D8D5CC] my-0.5" />
+                  <button
+                    onClick={() => handleExport('json')}
+                    className="px-3 py-2 text-left flex items-center gap-2 hover:bg-[#F2C94C] text-[#14161A] transition-colors"
+                  >
+                    <Code2 size={13} />
+                    <span>JSON Dataset (.json)</span>
+                  </button>
+                </div>
+              )}
+            </div>
+
             <button
               onClick={loadExampleLayout}
               className="neo-btn text-xs px-3 py-1.5 flex items-center gap-1.5 font-bold hover:bg-[#F2C94C]"

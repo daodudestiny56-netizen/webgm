@@ -1,19 +1,21 @@
 'use client';
 
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useMemo } from 'react';
 import { useCanvasStore } from '@/store/useCanvasStore';
 import { CanvasElementItem } from './CanvasElementItem';
 import { ProofreaderFlagMark, ProofreaderAnnotationMark } from '../Annotations/ProofreaderMark';
 import { AgentCursor } from '../AgentPanel/AgentCursor';
 import { getNonOverlappingPosition } from '@/utils/pinCollision';
 import type { BoundingBox } from '@/utils/pinCollision';
-import { Sparkles, Layers } from 'lucide-react';
+import { computeContrastRatio } from '@/utils/wcagMath';
+import { Sparkles, Layers, Eye } from 'lucide-react';
 
 export const Canvas: React.FC = () => {
   const { elements, flags, annotations, selectElement, isBeforeAfterMode, beforeSnapshot } = useCanvasStore();
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState<number>(1);
+  const [isWcagGridActive, setIsWcagGridActive] = useState<boolean>(false);
 
   // Auto-Scale Canvas to fit available container width cleanly
   useEffect(() => {
@@ -59,13 +61,13 @@ export const Canvas: React.FC = () => {
     if (!targetEl) return null;
 
     const initialBox: BoundingBox = {
-      x: Math.min(560, targetEl.x + targetEl.w + 16),
-      y: Math.max(10, targetEl.y - 8),
+      x: Math.min(560, targetEl.x + targetEl.w + 24),
+      y: Math.max(20, targetEl.y - 10),
       w: 220,
-      h: 55,
+      h: 60,
     };
 
-    const finalBox = getNonOverlappingPosition(initialBox, placedBoxes, 45);
+    const finalBox = getNonOverlappingPosition(initialBox, placedBoxes, 50);
     placedBoxes.push(finalBox);
 
     return {
@@ -76,7 +78,7 @@ export const Canvas: React.FC = () => {
     };
   });
 
-  // Calculate Margin Note Positions for Annotations
+  // Calculate Margin Note Positions for Standalone Annotations
   const computedAnnotations = annotations.map((annotation) => {
     const initialBox: BoundingBox = {
       x: Math.min(560, annotation.x),
@@ -95,6 +97,43 @@ export const Canvas: React.FC = () => {
     };
   });
 
+  // Live WCAG Contrast & Touch Target Overlay Computations
+  const wcagOverlays = useMemo(() => {
+    if (!isWcagGridActive) return { contrastBadges: [], touchTargets: [] };
+
+    const contrastBadges = elements
+      .filter((el) => el.text && el.text.trim().length > 0)
+      .map((el) => {
+        const bg = el.backgroundColor && el.backgroundColor !== 'transparent' ? el.backgroundColor : '#F6F5F1';
+        const result = computeContrastRatio(el.color, bg, el.fontSize, el.fontWeight || 400);
+        return {
+          id: el.id,
+          x: el.x,
+          y: Math.max(12, el.y - 16),
+          result,
+        };
+      });
+
+    const touchTargets = elements
+      .filter((el) => el.type === 'button' || el.type === 'nav')
+      .filter((el) => el.w < 44 || el.h < 44)
+      .map((el) => {
+        const targetW = Math.max(44, el.w);
+        const targetH = Math.max(44, el.h);
+        return {
+          id: el.id,
+          x: el.x - (targetW - el.w) / 2,
+          y: el.y - (targetH - el.h) / 2,
+          w: targetW,
+          h: targetH,
+          actualW: el.w,
+          actualH: el.h,
+        };
+      });
+
+    return { contrastBadges, touchTargets };
+  }, [elements, isWcagGridActive]);
+
   // Generate Drafting Table Ruler Ticks (Top & Left Edges)
   const topTicks = Array.from({ length: 40 }, (_, i) => i * 20);
   const leftTicks = Array.from({ length: 28 }, (_, i) => i * 20);
@@ -111,7 +150,22 @@ export const Canvas: React.FC = () => {
           <span className="font-extrabold text-xs tracking-wider uppercase">DRAFTING CANVAS</span>
           <span className="text-[#6B7280] font-normal hidden sm:inline">({elements.length} nodes)</span>
         </div>
-        <div className="flex items-center gap-3 text-[11px]">
+
+        <div className="flex items-center gap-2 sm:gap-3 text-[11px]">
+          {/* Feature 2: WCAG Grid & Touch Targets Toggle */}
+          <button
+            onClick={() => setIsWcagGridActive(!isWcagGridActive)}
+            className={`border border-[#14161A] px-2 py-0.5 font-extrabold transition-colors cursor-pointer flex items-center gap-1 text-[10px] ${
+              isWcagGridActive
+                ? 'bg-[#F2C94C] text-[#14161A] shadow-[1px_1px_0_#14161A]'
+                : 'bg-white text-[#6B7280] hover:text-[#14161A]'
+            }`}
+            title="Toggle live accessibility and touch target overlay"
+          >
+            <Eye size={11} />
+            <span>WCAG Grid</span>
+          </button>
+
           {flags.length > 0 && (
             <span className="neo-stamp neo-stamp-redline">
               {flags.length} {flags.length === 1 ? 'FLAG' : 'FLAGS'}
@@ -173,12 +227,51 @@ export const Canvas: React.FC = () => {
             ))}
           </div>
 
-          {/* Render Canvas Elements */}
-          {elements.map((element) => (
-            <CanvasElementItem key={element.id} element={element} />
+          {/* Render All Canvas Elements */}
+          {elements.map((el) => (
+            <CanvasElementItem key={el.id} element={el} />
           ))}
 
-          {/* Render Proofreader Flag Marks & Handwritten Margin Notes */}
+          {/* Feature 2: WCAG Live Accessibility Overlay (When Toggled Active) */}
+          {isWcagGridActive && (
+            <>
+              {/* 1. Touch Target Minimum 44×44px Bounding Boxes for Failing Elements */}
+              {wcagOverlays.touchTargets.map((tt) => (
+                <div
+                  key={`tt-${tt.id}`}
+                  className="absolute pointer-events-none z-30 border-2 border-dashed border-[#C1272D] flex items-start justify-end"
+                  style={{
+                    left: `${tt.x}px`,
+                    top: `${tt.y}px`,
+                    width: `${tt.w}px`,
+                    height: `${tt.h}px`,
+                  }}
+                >
+                  <span className="bg-[#C1272D] text-white text-[8px] font-extrabold px-1 py-0.2 tracking-tight">
+                    44×44 MIN ({tt.actualW}×{tt.actualH})
+                  </span>
+                </div>
+              ))}
+
+              {/* 2. Live WCAG Relative Luminance Contrast Badges */}
+              {wcagOverlays.contrastBadges.map((cb) => (
+                <div
+                  key={`cb-${cb.id}`}
+                  className={`absolute pointer-events-none z-30 px-1 py-0.2 text-[8px] font-extrabold border border-[#14161A] bg-[#F6F5F1] shadow-[1px_1px_0_#14161A] ${
+                    cb.result.isCompliant ? 'text-[#2F7A5C]' : 'text-[#C1272D]'
+                  }`}
+                  style={{
+                    left: `${cb.x}px`,
+                    top: `${cb.y}px`,
+                  }}
+                >
+                  {cb.result.formattedRatio} {cb.result.isCompliant ? 'PASS' : 'FAIL'}
+                </div>
+              ))}
+            </>
+          )}
+
+          {/* Render Proofreader Flags with Leader Lines & Pinned Notes */}
           {computedFlags.map((item) => {
             if (!item) return null;
             return (
