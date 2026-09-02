@@ -8,7 +8,8 @@
   --confirm: #2F7A5C;     /* resolved/fixed states only */
   --mark: #F2C94C;        /* highlighter accent — CTAs and ONE signature moment per screen only */
 
-  --font-sans: var(--font-bricolage, 'Bricolage Grotesque', system-ui, -apple-system, sans-serif);
+  --font-heading: var(--font-bricolage, 'Bricolage Grotesque', system-ui, -apple-system, sans-serif);
+  --font-sans: var(--font-jakarta, 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif);
 }
 
 * {
@@ -32,11 +33,15 @@ body {
   font-optical-sizing: auto;
 }
 
+h1, h2, h3, h4, h5, h6, .font-heading {
+  font-family: var(--font-heading);
+}
+
 /* Neobrutalist Component System Classes */
 
 /* Primary CTA Button (Highlighter Yellow Accent) */
 .neo-btn-primary {
-  font-family: var(--font-sans);
+  font-family: var(--font-heading);
   font-size: 13px;
   font-weight: 700;
   color: var(--ink);
@@ -67,7 +72,7 @@ body {
 
 /* Secondary Button (Paper/White Fill) */
 .neo-btn {
-  font-family: var(--font-sans);
+  font-family: var(--font-heading);
   font-size: 12px;
   font-weight: 600;
   color: var(--ink);
@@ -114,7 +119,7 @@ body {
 
 /* Stamped Badges */
 .neo-stamp {
-  font-family: var(--font-sans);
+  font-family: var(--font-heading);
   font-size: 10px;
   font-weight: 800;
   text-transform: uppercase;
