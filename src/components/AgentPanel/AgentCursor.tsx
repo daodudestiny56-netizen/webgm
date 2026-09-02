@@ -18,7 +18,7 @@ export const AgentCursor: React.FC = () => {
       {/* Minimal Ink Dot */}
       <div className="agent-cursor-dot-minimal" />
 
-      {/* Label Text */}
+      {/* Plain-text Label Nearby */}
       <div className="agent-cursor-label-minimal">
         {agentCursor.toolName ? `[${agentCursor.toolName}] ` : ''}
         {agentCursor.actionLabel || 'Agent Acting'}

@@ -36,6 +36,7 @@ export interface AnnotationPin {
   x: number;
   y: number;
   text: string;
+  targetId?: string;
   createdAt: number;
 }
 

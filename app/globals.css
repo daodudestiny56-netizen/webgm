@@ -1,12 +1,12 @@
 @import "tailwindcss";
 
 :root {
-  --paper: #F6F5F1;      /* base background, everywhere — light warm gray */
-  --ink: #14161A;         /* near-black — all borders, primary text, structural elements */
-  --rule: #D8D5CC;        /* hairline dividers only, never a border on interactive components */
-  --redline: #C1272D;     /* the "red pen" — flags, corrections, critical severity */
-  --confirm: #2F7A5C;     /* the "approved" stamp green — resolved/fixed states */
-  --mark: #F2C94C;        /* the "highlighter" — ONE accent color for primary CTAs */
+  --paper: #F6F5F1;      /* base background, everywhere */
+  --ink: #14161A;         /* borders, primary text, structure */
+  --rule: #D8D5CC;        /* hairline dividers only */
+  --redline: #C1272D;     /* flags/corrections — borders/badges, never decorative fills */
+  --confirm: #2F7A5C;     /* resolved/fixed states only */
+  --mark: #F2C94C;        /* highlighter accent — CTAs and ONE signature moment per screen only */
 
   --font-sans: var(--font-bricolage, 'Bricolage Grotesque', system-ui, -apple-system, sans-serif);
 }
@@ -143,22 +143,23 @@ body {
   color: var(--ink);
 }
 
-/* Agent Cursor */
+/* Agent Cursor Indicator (dot/line in --ink + plain-text label) */
 .agent-cursor-minimal {
   position: absolute;
   pointer-events: none;
   z-index: 999;
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
   display: flex;
   align-items: center;
   gap: 6px;
 }
 
 .agent-cursor-dot-minimal {
-  width: 10px;
-  height: 10px;
-  background-color: var(--mark);
-  border: 2px solid var(--ink);
+  width: 8px;
+  height: 8px;
+  background-color: var(--ink);
+  border: 1.5px solid var(--ink);
+  border-radius: 50%;
 }
 
 .agent-cursor-label-minimal {
@@ -167,8 +168,8 @@ body {
   font-weight: 700;
   color: var(--ink);
   background-color: var(--paper);
-  border: 2px solid var(--ink);
-  box-shadow: 2px 2px 0 var(--ink);
+  border: 1.5px solid var(--ink);
+  box-shadow: 1.5px 1.5px 0 var(--ink);
   padding: 1px 5px;
   white-space: nowrap;
 }
@@ -185,7 +186,7 @@ body {
 
 /* Canvas Element Transitions */
 .canvas-element {
-  transition: transform 0.2s ease-out, width 0.2s ease-out, height 0.2s ease-out, color 0.2s ease-out, background-color 0.2s ease-out;
+  transition: transform 0.25s ease-out, width 0.25s ease-out, height 0.25s ease-out, color 0.25s ease-out, background-color 0.25s ease-out;
   user-select: none;
 }
 
@@ -205,4 +206,3 @@ body {
 ::-webkit-scrollbar-thumb {
   background: var(--ink);
 }
-

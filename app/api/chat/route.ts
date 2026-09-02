@@ -39,7 +39,8 @@ export async function POST(req: Request) {
       lowerPrompt.includes('review') ||
       lowerPrompt.includes('critique') ||
       lowerPrompt.includes('issue') ||
-      lowerPrompt.includes('check')
+      lowerPrompt.includes('check') ||
+      lowerPrompt.includes('audit')
     ) {
       // 1. Tool call: getCanvasState
       executedToolLogs.push({
@@ -50,13 +51,13 @@ export async function POST(req: Request) {
 
       // 2. Tool call: flagIssue for heading contrast
       const heading = canvasState.elements.find((el) => el.id === 'main-heading' || el.type === 'heading');
-      if (heading && (heading.color === '#cbd5e1' || heading.color === '#d1d5db' || heading.color.toLowerCase() === '#b0b4bc')) {
+      if (heading && (heading.color === '#cbd5e1' || heading.color === '#d1d5db' || heading.color.toLowerCase() === '#b0b4bc' || heading.color === '#94a3b8')) {
         executedToolLogs.push({
           toolName: 'flagIssue',
           args: {
             id: heading.id,
             severity: 'high',
-            reason: 'Low contrast ratio (1.4:1). Faint gray text on paper background fails WCAG 2.1 AA.',
+            reason: 'Low contrast ratio (1.4:1). Faint text on paper background fails WCAG 2.1 AA.',
           },
           summary: `Flagged [${heading.id}]: Low WCAG contrast (1.4:1)`,
         });
@@ -64,13 +65,13 @@ export async function POST(req: Request) {
 
       // 3. Tool call: flagIssue for CTA button touch target
       const cta = canvasState.elements.find((el) => el.id === 'cta-button' || el.type === 'button');
-      if (cta && cta.h < 40) {
+      if (cta && cta.h < 44) {
         executedToolLogs.push({
           toolName: 'flagIssue',
           args: {
             id: cta.id,
             severity: 'medium',
-            reason: `Cramped touch target (${cta.w}×${cta.h}px, ${cta.fontSize}px font). Minimum 44px height recommended.`,
+            reason: `Cramped touch target (${cta.w}×${cta.h}px). Minimum 44px height required for accessible mobile interactions.`,
           },
           summary: `Flagged [${cta.id}]: Cramped touch target (${cta.w}×${cta.h}px)`,
         });
@@ -79,17 +80,18 @@ export async function POST(req: Request) {
       // 4. Tool call: annotateAt
       executedToolLogs.push({
         toolName: 'annotateAt',
-        args: { x: 480, y: 340, text: 'Recommendation: Increase heading contrast to 15:1 and expand CTA button height to 46px.' },
+        args: { x: 500, y: 320, text: 'Recommendation: Increase heading contrast to 15:1 and expand CTA button height to 46px.' },
         summary: 'Pinned margin note: Layout recommendations',
       });
 
       responseText =
-        'I reviewed your canvas and flagged 2 key design issues:\n1. Low contrast heading failing WCAG AA (1.4:1 contrast).\n2. Cramped CTA button touch target.\n\nWould you like me to fix these automatically?';
+        'I reviewed your canvas and flagged the key design issues:\n1. Low contrast heading failing WCAG AA (1.4:1 contrast).\n2. Cramped CTA button touch target (<44px).\n\nAsk me to fix these or rebalance your layout anytime.';
     } else if (
       lowerPrompt.includes('cta') ||
       lowerPrompt.includes('button') ||
       lowerPrompt.includes('accessible') ||
-      lowerPrompt.includes('touch')
+      lowerPrompt.includes('touch') ||
+      lowerPrompt.includes('target')
     ) {
       const cta = canvasState.elements.find((el) => el.id === 'cta-button' || el.type === 'button') || canvasState.elements[0];
       if (cta) {
@@ -99,12 +101,13 @@ export async function POST(req: Request) {
           summary: `Resized ${cta.id} to 175×46px (44px+ accessible touch target)`,
         });
       }
-      responseText = 'I expanded the CTA button touch target to 175×46px with 15px typography for mobile accessibility.';
+      responseText = 'I expanded the CTA button touch target to 175×46px with accessible typography.';
     } else if (
       lowerPrompt.includes('spacing') ||
       lowerPrompt.includes('nav') ||
       lowerPrompt.includes('align') ||
-      lowerPrompt.includes('reflow')
+      lowerPrompt.includes('reflow') ||
+      lowerPrompt.includes('gap')
     ) {
       const navIds = canvasState.elements
         .filter((el) => el.type === 'nav' && el.id !== 'nav-logo')
@@ -117,7 +120,7 @@ export async function POST(req: Request) {
           summary: `Rebalanced spacing across ${navIds.length} nav items with 16px gap`,
         });
       }
-      responseText = 'I aligned the navigation items vertically and rebalanced horizontal spacing cleanly with a 16px gap.';
+      responseText = 'I aligned the navigation items vertically and rebalanced horizontal spacing with a 16px gap.';
     } else if (
       lowerPrompt.includes('why') ||
       lowerPrompt.includes('flag') ||
@@ -133,14 +136,14 @@ export async function POST(req: Request) {
         });
       }
       responseText =
-        'The heading was flagged because light gray text (#cbd5e1) on a paper background (#F6F5F1) has a contrast ratio of only 1.4:1 (WCAG requires 4.5:1). I have updated the heading ink color to high-contrast #17181A.';
+        'The heading was flagged because light gray text on a paper background (#F6F5F1) has a contrast ratio of only 1.4:1 (WCAG requires 4.5:1 minimum). Updating the heading ink color to #14161A restores a 15:1 contrast ratio.';
     } else {
       executedToolLogs.push({
         toolName: 'annotateAt',
         args: { x: 300, y: 150, text: promptText },
         summary: `Pinned margin note: "${promptText.substring(0, 30)}"`,
       });
-      responseText = `I have inspected your canvas elements. I dropped an annotation note for "${promptText}". Ask me to fix contrast, resize buttons, or rebalance nav spacing anytime!`;
+      responseText = `I have inspected your canvas elements and added a note for "${promptText}". Ask me to critique contrast, resize buttons, or rebalance nav spacing.`;
     }
 
     return NextResponse.json({

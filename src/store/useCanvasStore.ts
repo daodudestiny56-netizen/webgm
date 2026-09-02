@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import type { CanvasElement, FlaggedIssue, AnnotationPin, AgentCursorState, ToolLogEntry, ElementType } from '../types/canvas';
 
-// Default Sample Baseline Layout
+// Default Sample Baseline Layout (Used for "Load Sample" button)
 export const SAMPLE_MOCKUP_ELEMENTS: CanvasElement[] = [
   {
     id: 'nav-logo',
@@ -11,8 +11,8 @@ export const SAMPLE_MOCKUP_ELEMENTS: CanvasElement[] = [
     w: 110,
     h: 36,
     text: 'ACME UI',
-    color: '#17181A',
-    backgroundColor: '#EBE8E0',
+    color: '#14161A',
+    backgroundColor: '#ffffff',
     fontSize: 16,
     fontWeight: 800,
     zIndex: 10,
@@ -25,7 +25,7 @@ export const SAMPLE_MOCKUP_ELEMENTS: CanvasElement[] = [
     w: 90,
     h: 32,
     text: 'Products',
-    color: '#17181A',
+    color: '#14161A',
     backgroundColor: '#ffffff',
     fontSize: 14,
     fontWeight: 600,
@@ -39,7 +39,7 @@ export const SAMPLE_MOCKUP_ELEMENTS: CanvasElement[] = [
     w: 95,
     h: 32,
     text: 'Solutions',
-    color: '#17181A',
+    color: '#14161A',
     backgroundColor: '#ffffff',
     fontSize: 14,
     fontWeight: 600,
@@ -53,7 +53,7 @@ export const SAMPLE_MOCKUP_ELEMENTS: CanvasElement[] = [
     w: 95,
     h: 32,
     text: 'Enterprise',
-    color: '#17181A',
+    color: '#14161A',
     backgroundColor: '#ffffff',
     fontSize: 14,
     fontWeight: 600,
@@ -67,7 +67,7 @@ export const SAMPLE_MOCKUP_ELEMENTS: CanvasElement[] = [
     w: 80,
     h: 32,
     text: 'Pricing',
-    color: '#17181A',
+    color: '#14161A',
     backgroundColor: '#ffffff',
     fontSize: 14,
     fontWeight: 600,
@@ -106,11 +106,11 @@ export const SAMPLE_MOCKUP_ELEMENTS: CanvasElement[] = [
     type: 'button',
     x: 40,
     y: 295,
-    w: 110, // Cramped! Should be ~180px
-    h: 28,  // Cramped! Should be ~48px
+    w: 110, // Cramped! Should be ~175px
+    h: 28,  // Cramped! Should be ~46px
     text: 'Start Free Trial ->',
     color: '#ffffff',
-    backgroundColor: '#17181A',
+    backgroundColor: '#14161A',
     fontSize: 11, // Tiny text!
     fontWeight: 700,
     zIndex: 8,
@@ -123,8 +123,8 @@ export const SAMPLE_MOCKUP_ELEMENTS: CanvasElement[] = [
     w: 240,
     h: 240,
     text: '[ ACME APP DASHBOARD ]\n\nAnalytics & Visual Metrics',
-    color: '#17181A',
-    backgroundColor: '#EBE8E0',
+    color: '#14161A',
+    backgroundColor: '#ffffff',
     fontSize: 13,
     fontWeight: 600,
     zIndex: 4,
@@ -161,10 +161,12 @@ interface CanvasStoreState {
   clearCanvas: () => void;
   loadExampleLayout: () => void;
   resetToFlawedMockup: () => void;
-  applyFullAgentFixes: () => void;
 }
 
+let elementIdCounter = 0;
+
 export const useCanvasStore = create<CanvasStoreState>((set, get) => ({
+  // Default to sample mockup so canvas is immediately interactive, or user can clear/edit
   elements: SAMPLE_MOCKUP_ELEMENTS,
   flags: [],
   annotations: [],
@@ -182,7 +184,7 @@ export const useCanvasStore = create<CanvasStoreState>((set, get) => ({
   setElements: (elements) => set({ elements }),
 
   addElement: (type) => {
-    const count = get().elements.length + 1;
+    const count = ++elementIdCounter;
     let newEl: CanvasElement;
 
     const baseId = `${type}-${count}`;
@@ -199,7 +201,7 @@ export const useCanvasStore = create<CanvasStoreState>((set, get) => ({
           w: 380,
           h: 60,
           text: 'New Heading Title',
-          color: '#17181A',
+          color: '#14161A',
           backgroundColor: 'transparent',
           fontSize: 26,
           fontWeight: 800,
@@ -229,10 +231,10 @@ export const useCanvasStore = create<CanvasStoreState>((set, get) => ({
           x: defaultX,
           y: defaultY,
           w: 160,
-          h: 42,
+          h: 44,
           text: 'Action Button ->',
           color: '#ffffff',
-          backgroundColor: '#17181A',
+          backgroundColor: '#14161A',
           fontSize: 14,
           fontWeight: 700,
           zIndex: 15,
@@ -247,7 +249,7 @@ export const useCanvasStore = create<CanvasStoreState>((set, get) => ({
           w: 90,
           h: 32,
           text: 'Nav Item',
-          color: '#17181A',
+          color: '#14161A',
           backgroundColor: '#ffffff',
           fontSize: 14,
           fontWeight: 600,
@@ -263,8 +265,8 @@ export const useCanvasStore = create<CanvasStoreState>((set, get) => ({
           w: 220,
           h: 180,
           text: '[ Image / Graphic Block ]',
-          color: '#17181A',
-          backgroundColor: '#EBE8E0',
+          color: '#14161A',
+          backgroundColor: '#ffffff',
           fontSize: 13,
           fontWeight: 600,
           zIndex: 5,
@@ -279,7 +281,7 @@ export const useCanvasStore = create<CanvasStoreState>((set, get) => ({
           w: 200,
           h: 120,
           text: 'Container Box',
-          color: '#17181A',
+          color: '#14161A',
           backgroundColor: '#ffffff',
           fontSize: 13,
           fontWeight: 500,
@@ -363,7 +365,7 @@ export const useCanvasStore = create<CanvasStoreState>((set, get) => ({
             x: el.x + el.w / 2,
             y: el.y,
             targetId: elementId,
-            actionLabel: `Marked: ${reason.substring(0, 30)}...`,
+            actionLabel: `Flagged: ${reason.substring(0, 30)}...`,
             toolName: 'flagIssue',
             timestamp: Date.now(),
           }
@@ -396,7 +398,7 @@ export const useCanvasStore = create<CanvasStoreState>((set, get) => ({
         visible: true,
         x,
         y,
-        actionLabel: `Margin Note: "${text.substring(0, 25)}..."`,
+        actionLabel: `Note: "${text.substring(0, 25)}..."`,
         toolName: 'annotateAt',
         timestamp: Date.now(),
       },
@@ -500,46 +502,4 @@ export const useCanvasStore = create<CanvasStoreState>((set, get) => ({
       agentCursor: { visible: false, x: 0, y: 0, timestamp: Date.now() },
       isBeforeAfterMode: false,
     }),
-
-  applyFullAgentFixes: () => {
-    const state = get();
-    const fixedElements = state.elements.map((el) => {
-      if (el.id === 'main-heading') {
-        return { ...el, color: '#17181A' };
-      }
-      if (el.id === 'cta-button') {
-        return { ...el, w: 175, h: 46, fontSize: 15 };
-      }
-      return el;
-    });
-
-    const navItems = ['nav-item-1', 'nav-item-2', 'nav-item-3', 'nav-item-4'];
-    let startX = 180;
-    const gap = 16;
-    const targetY = 32;
-
-    const finalElements = fixedElements.map((el) => {
-      if (navItems.includes(el.id)) {
-        const updated = { ...el, x: startX, y: targetY };
-        startX += el.w + gap;
-        return updated;
-      }
-      return el;
-    });
-
-    const resolvedFlags = state.flags.map((f) => ({ ...f, resolved: true }));
-
-    set({
-      elements: finalElements,
-      flags: resolvedFlags,
-      agentCursor: {
-        visible: true,
-        x: 300,
-        y: 200,
-        actionLabel: 'Applied full layout reflow & contrast corrections',
-        toolName: 'applyFullAgentFixes',
-        timestamp: Date.now(),
-      },
-    });
-  },
 }));

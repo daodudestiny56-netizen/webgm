@@ -1,17 +1,16 @@
 import { useCanvasStore } from '../store/useCanvasStore';
 import type { WebMCPTool } from '../types/canvas';
 
-// Registry of tools for direct invocation by simulator, AI chat, or WebMCP host
+// Registry of tools for direct invocation by native WebMCP host or embedded AI Assistant
 export const registeredToolsMap = new Map<string, WebMCPTool>();
 
 export function registerWebMCPTools() {
-  // Polyfill navigator.modelContext if missing
+  // Polyfill navigator.modelContext if missing in current browser environment
   if (typeof window !== 'undefined') {
     if (!navigator.modelContext) {
       const toolsList: WebMCPTool[] = [];
       navigator.modelContext = {
         registerTool: (tool: WebMCPTool) => {
-          console.log(`[WebMCP Polyfill] Registering tool: ${tool.name}`);
           toolsList.push(tool);
           registeredToolsMap.set(tool.name, tool);
         },
@@ -20,12 +19,12 @@ export function registerWebMCPTools() {
     }
   }
 
-  // Define the 6 mandatory WebMCP tools
+  // Exactly the 6 mandatory WebMCP tools specified in Master Spec
   const tools: WebMCPTool[] = [
     {
       name: 'getCanvasState',
       description:
-        'Call this tool FIRST before performing any design critiques or canvas mutations. Returns the complete state of all canvas elements with their spatial coordinates (x, y, w, h), font size, colors, text, active issue flags, and currently selected element.',
+        'Call this tool FIRST, always, before performing any design critiques or canvas mutations. Returns the full element list: {id, type, x, y, w, h, color, fontSize, text, selected}[], along with active flagged issues and annotations.',
       inputSchema: {
         type: 'object',
         properties: {},
@@ -58,13 +57,13 @@ export function registerWebMCPTools() {
     {
       name: 'flagIssue',
       description:
-        'Flag a design issue on a specific canvas element. Draws a proofreader pen circle and attaches a margin note with severity ("high", "medium", "low") and reason. Use ONLY to flag a bug/issue, never to fix one.',
+        'Flag a visual design issue on a specific canvas element. Draws a hard-bordered --redline outline + stamped severity badge ("low" | "medium" | "high"), anchored to the target element\'s top-right corner with a fixed offset. Never fixes, only flags.',
       inputSchema: {
         type: 'object',
         properties: {
-          id: { type: 'string', description: 'ID of the element to flag (e.g. "cta-button", "main-heading")' },
-          severity: { type: 'string', enum: ['low', 'medium', 'high'], description: 'Issue severity level' },
-          reason: { type: 'string', description: 'Clear explanation of the visual design issue' },
+          id: { type: 'string', description: 'ID of the element to flag (e.g. "main-heading", "cta-button")' },
+          severity: { type: 'string', enum: ['low', 'medium', 'high'], description: 'Severity level' },
+          reason: { type: 'string', description: 'Clear explanation of the design or accessibility issue' },
         },
         required: ['id', 'severity', 'reason'],
       },
@@ -88,7 +87,7 @@ export function registerWebMCPTools() {
     {
       name: 'moveElement',
       description:
-        'Reposition a single canvas element to new coordinates (x, y) with smooth animation. Use ONLY for moving a single element.',
+        'Reposition a single canvas element to new coordinates (x, y) with smooth animation (~300ms). Use ONLY for moving a single element.',
       inputSchema: {
         type: 'object',
         properties: {
@@ -118,7 +117,7 @@ export function registerWebMCPTools() {
     {
       name: 'resizeElement',
       description:
-        'Resize a single canvas element to new width (w) and height (h) dimensions with smooth animation. Use for fixing cramped buttons or resizing cards.',
+        'Resize a single canvas element to new width (w) and height (h) dimensions with smooth animation (~300ms). Use for fixing cramped touch targets or expanding containers.',
       inputSchema: {
         type: 'object',
         properties: {
@@ -148,7 +147,7 @@ export function registerWebMCPTools() {
     {
       name: 'suggestSpacing',
       description:
-        'Redistribute equal spacing across a list of 2 or more canvas elements (e.g. nav items). Aligns elements smoothly. Use ONLY when operating on 2+ elements.',
+        'Redistribute equal spacing across a list of 2 or more canvas elements (e.g. navigation items) with animated before/after. Never used for a single element.',
       inputSchema: {
         type: 'object',
         properties: {
@@ -185,7 +184,7 @@ export function registerWebMCPTools() {
     {
       name: 'annotateAt',
       description:
-        'Drop a handwritten margin note pin at exact canvas coordinates (x, y). Use for macro layout comments or general recommendations.',
+        'Drop a flat bordered note card at exact canvas coordinates (x, y), connected to its target (if any) by a straight leader line. Use for macro layout comments or general recommendations.',
       inputSchema: {
         type: 'object',
         properties: {
@@ -217,6 +216,4 @@ export function registerWebMCPTools() {
       console.warn(`Error registering WebMCP tool ${tool.name}:`, e);
     }
   });
-
-  console.log('✅ WebMCP Tools Registered:', Array.from(registeredToolsMap.keys()));
 }

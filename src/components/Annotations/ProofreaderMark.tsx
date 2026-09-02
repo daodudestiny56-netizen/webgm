@@ -76,7 +76,7 @@ export const ProofreaderFlagMark: React.FC<ProofreaderFlagProps> = ({
         <circle cx={startX} cy={startY} r="3" fill="#14161A" />
       </svg>
 
-      {/* 3. Margin Note: Index Card Pinned to Canvas */}
+      {/* 3. Margin Note: Flat Bordered Index Card Pinned to Canvas */}
       <div
         className="absolute z-40 pointer-events-auto max-w-[220px] bg-[#F6F5F1] p-2.5 select-none"
         style={{

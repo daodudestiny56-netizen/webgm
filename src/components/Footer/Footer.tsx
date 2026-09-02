@@ -9,7 +9,7 @@ export const Footer: React.FC = () => {
       desc: (
         <>
           Exposes canvas store directly to agents via{' '}
-          <code className="bg-[#EBE8E0] border border-[#14161A] px-1 font-bold">navigator.modelContext</code>.
+          <code className="bg-white border border-[#14161A] px-1 font-bold">navigator.modelContext</code>.
         </>
       ),
     },
