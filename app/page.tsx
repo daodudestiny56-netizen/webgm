@@ -7,65 +7,65 @@ export default function LandingPage() {
     <div className="min-h-screen w-full bg-[#F6F5F1] text-[#14161A] font-sans flex flex-col items-center">
       {/* 
         Centered Main Container:
-        - Constrained to max-w-5xl (1024px) and centered with mx-auto
-        - Balanced horizontal padding (px-4 on mobile, px-6 on tablet, px-8 on desktop)
-        - Fills 100% of available width up to 1024px, flanked by --paper background
+        - Max-width max-w-5xl (1024px) centered with mx-auto
+        - Generous outer padding (px-4 sm:px-6 lg:px-8, py-8 sm:py-14)
+        - Increased vertical section spacing (space-y-14 sm:space-y-20)
       */}
-      <main className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 space-y-10 sm:space-y-14 flex-1 flex flex-col">
+      <main className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-14 space-y-14 sm:space-y-20 flex-1 flex flex-col">
         
-        {/* 1. Header Navigation */}
-        <header className="w-full bg-[#F6F5F1] border-2 border-[#14161A] shadow-[3px_3px_0_#14161A] px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-2.5 sm:gap-3">
+        {/* 1. Header Navigation — Generous inner padding away from borders */}
+        <header className="w-full bg-[#F6F5F1] border-2 border-[#14161A] shadow-[3px_3px_0_#14161A] px-6 sm:px-8 py-4 sm:py-4.5 flex items-center justify-between">
+          <div className="flex items-center gap-3 sm:gap-4">
             <span className="font-extrabold text-sm sm:text-base tracking-tight text-[#14161A]">CRIT STUDIO</span>
-            <span className="text-[11px] text-[#6B7280] font-bold border-l-2 border-[#14161A] pl-2.5 hidden sm:inline">
+            <span className="text-[11px] text-[#6B7280] font-bold border-l-2 border-[#14161A] pl-3 hidden sm:inline">
               WebMCP Design Canvas Engine
             </span>
           </div>
 
-          <Link href="/workspace" className="neo-btn-primary text-xs px-3.5 py-2 min-h-[36px]">
+          <Link href="/workspace" className="neo-btn-primary text-xs px-4 py-2 min-h-[38px]">
             <span>Launch Workspace</span>
             <ArrowRight size={13} />
           </Link>
         </header>
 
-        {/* 2. Hero Box Container (Boxed Card Architecture) */}
-        <section className="w-full bg-white border-2 border-[#14161A] shadow-[4px_4px_0_#14161A] p-6 sm:p-10 text-center flex flex-col items-center">
+        {/* 2. Hero Box Container — Spacious interior padding */}
+        <section className="w-full bg-white border-2 border-[#14161A] shadow-[4px_4px_0_#14161A] p-8 sm:p-12 md:p-14 text-center flex flex-col items-center">
           {/* Submission Badge */}
-          <div className="inline-flex items-center gap-1.5 bg-[#F6F5F1] border-2 border-[#14161A] shadow-[2px_2px_0_#14161A] px-3 py-1 mb-5 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-[#14161A]">
-            <Zap size={12} className="fill-[#F2C94C] text-[#14161A]" />
+          <div className="inline-flex items-center gap-2 bg-[#F6F5F1] border-2 border-[#14161A] shadow-[2px_2px_0_#14161A] px-3.5 py-1.5 mb-6 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-[#14161A]">
+            <Zap size={13} className="fill-[#F2C94C] text-[#14161A]" />
             <span>WebMCP Challenge 2026 Submission</span>
           </div>
 
           {/* Fluid Responsive Title */}
-          <h1 className="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-[#14161A] leading-[1.15] mb-4 max-w-2xl">
+          <h1 className="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-[#14161A] leading-[1.15] mb-5 max-w-2xl">
             Give your AI agent hands,<br className="hidden sm:inline" /> not just words.
           </h1>
 
           {/* Hero Subhead */}
-          <p className="text-xs sm:text-sm md:text-base text-[#6B7280] max-w-lg mx-auto leading-relaxed mb-8 font-medium">
+          <p className="text-xs sm:text-sm md:text-base text-[#6B7280] max-w-lg mx-auto leading-relaxed mb-9 font-medium">
             Crit Studio exposes design canvases as WebMCP tools so AI agents can inspect coordinates, flag visual flaws, resize touch targets, and rebalance layouts live on screen.
           </p>
 
           {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto">
-            <Link href="/workspace" className="neo-btn-primary text-xs sm:text-sm px-6 py-3.5 min-h-[46px] w-full sm:w-auto text-center justify-center">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3.5 sm:gap-4 w-full sm:w-auto">
+            <Link href="/workspace" className="neo-btn-primary text-xs sm:text-sm px-7 py-3.5 min-h-[48px] w-full sm:w-auto text-center justify-center">
               <span>Open Interactive Workspace</span>
               <ArrowRight size={14} />
             </Link>
 
-            <a href="#how-it-works" className="neo-btn text-xs sm:text-sm px-6 py-3.5 min-h-[46px] w-full sm:w-auto text-center justify-center">
+            <a href="#how-it-works" className="neo-btn text-xs sm:text-sm px-7 py-3.5 min-h-[48px] w-full sm:w-auto text-center justify-center">
               <span>See How It Works</span>
             </a>
           </div>
         </section>
 
-        {/* 3. Three Simple Steps Section */}
-        <section id="how-it-works" className="w-full space-y-3">
+        {/* 3. Three Simple Steps Section — Expanded spacing */}
+        <section id="how-it-works" className="w-full space-y-4">
           <div className="text-[11px] font-extrabold uppercase tracking-wider text-[#14161A] px-1">
             Three Simple Steps to Review Any Canvas
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 w-full">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 w-full">
             {[
               {
                 step: '1',
@@ -85,52 +85,52 @@ export default function LandingPage() {
             ].map((item) => (
               <div
                 key={item.step}
-                className="w-full bg-white border-2 border-[#14161A] shadow-[3px_3px_0_#14161A] p-4 sm:p-5 flex flex-col text-left"
+                className="w-full bg-white border-2 border-[#14161A] shadow-[3px_3px_0_#14161A] p-6 sm:p-7 flex flex-col text-left"
               >
-                <div className="flex items-center gap-2.5 mb-2.5">
-                  <div className="w-6 h-6 border-2 border-[#14161A] bg-[#F2C94C] flex items-center justify-center font-extrabold text-[11px] text-[#14161A]">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-7 h-7 border-2 border-[#14161A] bg-[#F2C94C] flex items-center justify-center font-extrabold text-xs text-[#14161A]">
                     {item.step}
                   </div>
-                  <h3 className="font-extrabold text-xs sm:text-sm text-[#14161A]">{item.title}</h3>
+                  <h3 className="font-extrabold text-sm sm:text-base text-[#14161A]">{item.title}</h3>
                 </div>
-                <p className="text-[11px] sm:text-xs text-[#6B7280] leading-relaxed font-medium">{item.desc}</p>
+                <p className="text-xs text-[#6B7280] leading-relaxed font-medium">{item.desc}</p>
               </div>
             ))}
           </div>
         </section>
 
-        {/* 4. Canvas Review Document Preview Card */}
-        <section id="canvas-preview" className="w-full space-y-3">
+        {/* 4. Canvas Review Document Preview Card — Generous interior padding */}
+        <section id="canvas-preview" className="w-full space-y-4">
           {/* Top Bar Header */}
-          <div className="w-full bg-[#14161A] text-white px-4 py-2.5 border-2 border-[#14161A] shadow-[3px_3px_0_#14161A] flex items-center justify-between">
+          <div className="w-full bg-[#14161A] text-white px-5 py-3 border-2 border-[#14161A] shadow-[3px_3px_0_#14161A] flex items-center justify-between">
             <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider">
               <Sparkles size={13} className="text-[#F2C94C]" />
               <span>Example Review: acme-landing.fig</span>
             </div>
             <Link
               href="/workspace"
-              className="text-[10px] font-bold bg-[#F2C94C] text-[#14161A] px-2.5 py-0.5 border border-[#14161A] hover:bg-white transition-colors"
+              className="text-[10px] font-bold bg-[#F2C94C] text-[#14161A] px-3 py-1 border border-[#14161A] hover:bg-white transition-colors"
             >
               OPEN IN WORKSPACE -&gt;
             </Link>
           </div>
 
           {/* Report Document Frame */}
-          <div className="w-full bg-white border-2 border-[#14161A] shadow-[4px_4px_0_#14161A] p-4 sm:p-6 overflow-hidden">
+          <div className="w-full bg-white border-2 border-[#14161A] shadow-[4px_4px_0_#14161A] p-6 sm:p-8 overflow-hidden">
             {/* Header inside Report */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 mb-4 border-b-2 border-[#14161A] gap-3">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-5 mb-5 border-b-2 border-[#14161A] gap-3">
               <div>
-                <div className="flex items-center gap-2">
-                  <h2 className="text-base sm:text-lg font-extrabold text-[#14161A]">acme-landing.fig</h2>
+                <div className="flex items-center gap-2.5">
+                  <h2 className="text-base sm:text-xl font-extrabold text-[#14161A]">acme-landing.fig</h2>
                   <span className="neo-stamp neo-stamp-mark text-[9px]">LIVE CANVAS</span>
                 </div>
-                <p className="text-[11px] text-[#6B7280] mt-0.5 font-medium">
-                  Audited via WebMCP Tools: <code className="bg-[#F6F5F1] border border-[#14161A] px-1 font-bold">getCanvasState</code>, <code className="bg-[#F6F5F1] border border-[#14161A] px-1 font-bold">flagIssue</code>
+                <p className="text-xs text-[#6B7280] mt-1 font-medium">
+                  Audited via WebMCP Tools: <code className="bg-[#F6F5F1] border border-[#14161A] px-1.5 py-0.5 font-bold">getCanvasState</code>, <code className="bg-[#F6F5F1] border border-[#14161A] px-1.5 py-0.5 font-bold">flagIssue</code>
                 </p>
               </div>
 
               {/* Audit Grade Badge */}
-              <div className="self-start sm:self-auto border-2 border-[#C1272D] bg-[#F6F5F1] px-3 py-1 shadow-[2px_2px_0_#C1272D]">
+              <div className="self-start sm:self-auto border-2 border-[#C1272D] bg-[#F6F5F1] px-3.5 py-1.5 shadow-[2px_2px_0_#C1272D]">
                 <div className="text-[9px] font-extrabold uppercase text-[#C1272D] tracking-wider">
                   2 ISSUES FLAGGED
                 </div>
@@ -139,7 +139,7 @@ export default function LandingPage() {
             </div>
 
             {/* Vector Canvas Preview Box */}
-            <div className="w-full aspect-[800/440] bg-[#F6F5F1] border-2 border-[#14161A] overflow-hidden relative mb-5">
+            <div className="w-full aspect-[800/440] bg-[#F6F5F1] border-2 border-[#14161A] overflow-hidden relative mb-6">
               <svg
                 viewBox="0 0 800 440"
                 className="w-full h-full block select-none"
@@ -258,37 +258,37 @@ export default function LandingPage() {
 
             {/* Findings Table */}
             <div className="w-full border-2 border-[#14161A] bg-white">
-              <div className="bg-[#F6F5F1] px-3 py-1.5 border-b-2 border-[#14161A] text-[10px] font-extrabold uppercase tracking-wider text-[#14161A]">
+              <div className="bg-[#F6F5F1] px-4 py-2 border-b-2 border-[#14161A] text-[10px] font-extrabold uppercase tracking-wider text-[#14161A]">
                 CRITIQUE FINDINGS &amp; TOOL AUDIT LOGS
               </div>
               <div className="divide-y divide-[#D8D5CC] text-xs">
-                <div className="p-2.5 sm:p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
+                <div className="p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
                     <span className="w-2 h-2 bg-[#C1272D] border border-[#14161A]" />
                     <span className="font-bold text-[#14161A]">Heading Color Contrast</span>
-                    <code className="text-[10px] bg-[#F6F5F1] border border-[#14161A] px-1 font-bold">#cbd5e1 on #F6F5F1</code>
+                    <code className="text-[10px] bg-[#F6F5F1] border border-[#14161A] px-1.5 py-0.5 font-bold">#cbd5e1 on #F6F5F1</code>
                   </div>
                   <span className="text-[11px] font-bold text-[#C1272D] self-start sm:self-auto">
                     FAILED WCAG AA (1.4:1)
                   </span>
                 </div>
 
-                <div className="p-2.5 sm:p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
+                <div className="p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
                     <span className="w-2 h-2 bg-[#2F7A5C] border border-[#14161A]" />
                     <span className="font-bold text-[#14161A]">Navbar Layout &amp; Spacing</span>
-                    <code className="text-[10px] bg-[#F6F5F1] border border-[#14161A] px-1 font-bold">gap: 16px horizontal</code>
+                    <code className="text-[10px] bg-[#F6F5F1] border border-[#14161A] px-1.5 py-0.5 font-bold">gap: 16px horizontal</code>
                   </div>
                   <span className="text-[11px] font-bold text-[#2F7A5C] self-start sm:self-auto">
                     ALIGNED // 4 ITEMS
                   </span>
                 </div>
 
-                <div className="p-2.5 sm:p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div className="p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
                     <span className="w-2 h-2 bg-[#F2C94C] border border-[#14161A]" />
                     <span className="font-bold text-[#14161A]">CTA Touch Target Size</span>
-                    <code className="text-[10px] bg-[#F6F5F1] border border-[#14161A] px-1 font-bold">155×38px -&gt; 175×46px</code>
+                    <code className="text-[10px] bg-[#F6F5F1] border border-[#14161A] px-1.5 py-0.5 font-bold">155×38px -&gt; 175×46px</code>
                   </div>
                   <span className="text-[11px] font-bold text-[#14161A] self-start sm:self-auto">
                     ACCESSIBLE TARGET
@@ -300,63 +300,63 @@ export default function LandingPage() {
         </section>
 
         {/* 5. Why WebMCP Comparison Section */}
-        <section className="w-full space-y-3">
+        <section className="w-full space-y-4">
           <div className="text-[11px] font-extrabold uppercase tracking-wider text-[#14161A] px-1">
             Why WebMCP? Spatial Tools vs Passive Chat
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6 w-full">
             {/* Traditional Chat Card */}
-            <div className="w-full bg-white border-2 border-[#14161A] shadow-[3px_3px_0_#14161A] p-5 border-t-4 border-t-[#C1272D] flex flex-col">
-              <div className="inline-flex items-center gap-1.5 self-start bg-[#C1272D] text-[#F6F5F1] px-2 py-0.5 border border-[#14161A] font-bold text-[9px] uppercase tracking-wider mb-3">
+            <div className="w-full bg-white border-2 border-[#14161A] shadow-[3px_3px_0_#14161A] p-6 sm:p-7 border-t-4 border-t-[#C1272D] flex flex-col">
+              <div className="inline-flex items-center gap-1.5 self-start bg-[#C1272D] text-[#F6F5F1] px-2.5 py-1 border border-[#14161A] font-bold text-[9px] uppercase tracking-wider mb-4">
                 <ShieldAlert size={11} />
                 <span>TRADITIONAL CHAT / VISION</span>
               </div>
 
-              <h4 className="font-extrabold text-sm text-[#14161A] mb-1">Passive Text Descriptions</h4>
-              <p className="text-[11px] text-[#6B7280] leading-relaxed font-medium mb-4">
+              <h4 className="font-extrabold text-base text-[#14161A] mb-1.5">Passive Text Descriptions</h4>
+              <p className="text-xs text-[#6B7280] leading-relaxed font-medium mb-5">
                 AI generates verbose text advice. You manually interpret and tweak coordinates yourself.
               </p>
 
-              <div className="border-t border-[#D8D5CC] pt-3 space-y-2 mt-auto text-[11px]">
+              <div className="border-t border-[#D8D5CC] pt-4 space-y-2.5 mt-auto text-xs">
                 <div className="flex items-start gap-2 text-[#14161A]">
-                  <XCircle size={13} className="text-[#C1272D] shrink-0 mt-0.5" />
+                  <XCircle size={14} className="text-[#C1272D] shrink-0 mt-0.5" />
                   <span>Ambiguous feedback (&quot;make button bigger&quot;)</span>
                 </div>
                 <div className="flex items-start gap-2 text-[#14161A]">
-                  <XCircle size={13} className="text-[#C1272D] shrink-0 mt-0.5" />
+                  <XCircle size={14} className="text-[#C1272D] shrink-0 mt-0.5" />
                   <span>Vision models approximate clicks unreliably</span>
                 </div>
                 <div className="flex items-start gap-2 text-[#14161A]">
-                  <XCircle size={13} className="text-[#C1272D] shrink-0 mt-0.5" />
+                  <XCircle size={14} className="text-[#C1272D] shrink-0 mt-0.5" />
                   <span>Zero direct execution on the DOM or canvas</span>
                 </div>
               </div>
             </div>
 
             {/* WebMCP Spatial Card */}
-            <div className="w-full bg-white border-2 border-[#14161A] shadow-[3px_3px_0_#14161A] p-5 border-t-4 border-t-[#2F7A5C] flex flex-col">
-              <div className="inline-flex items-center gap-1.5 self-start bg-[#2F7A5C] text-[#F6F5F1] px-2 py-0.5 border border-[#14161A] font-bold text-[9px] uppercase tracking-wider mb-3">
+            <div className="w-full bg-white border-2 border-[#14161A] shadow-[3px_3px_0_#14161A] p-6 sm:p-7 border-t-4 border-t-[#2F7A5C] flex flex-col">
+              <div className="inline-flex items-center gap-1.5 self-start bg-[#2F7A5C] text-[#F6F5F1] px-2.5 py-1 border border-[#14161A] font-bold text-[9px] uppercase tracking-wider mb-4">
                 <CheckCircle2 size={11} />
                 <span>WEBMCP SPATIAL TOOLS</span>
               </div>
 
-              <h4 className="font-extrabold text-sm text-[#14161A] mb-1">Direct Canvas Execution</h4>
-              <p className="text-[11px] text-[#14161A]/80 leading-relaxed font-medium mb-4">
+              <h4 className="font-extrabold text-base text-[#14161A] mb-1.5">Direct Canvas Execution</h4>
+              <p className="text-xs text-[#14161A]/80 leading-relaxed font-medium mb-5">
                 AI calls structured browser tools, mutating element coordinates and spacing live.
               </p>
 
-              <div className="border-t border-[#D8D5CC] pt-3 space-y-2 mt-auto text-[11px]">
+              <div className="border-t border-[#D8D5CC] pt-4 space-y-2.5 mt-auto text-xs">
                 <div className="flex items-start gap-2 text-[#14161A]">
-                  <Check size={13} className="text-[#2F7A5C] shrink-0 mt-0.5 font-bold" />
-                  <span>Structured tools: <code className="bg-[#F6F5F1] border border-[#14161A] px-1 font-bold text-[10px]">flagIssue</code>, <code className="bg-[#F6F5F1] border border-[#14161A] px-1 font-bold text-[10px]">resizeElement</code></span>
+                  <Check size={14} className="text-[#2F7A5C] shrink-0 mt-0.5 font-bold" />
+                  <span>Structured tools: <code className="bg-[#F6F5F1] border border-[#14161A] px-1.5 py-0.5 font-bold text-[11px]">flagIssue</code>, <code className="bg-[#F6F5F1] border border-[#14161A] px-1.5 py-0.5 font-bold text-[11px]">resizeElement</code></span>
                 </div>
                 <div className="flex items-start gap-2 text-[#14161A]">
-                  <Check size={13} className="text-[#2F7A5C] shrink-0 mt-0.5 font-bold" />
-                  <span>Exact coordinate inspection via <code className="bg-[#F6F5F1] border border-[#14161A] px-1 font-bold text-[10px]">getCanvasState</code></span>
+                  <Check size={14} className="text-[#2F7A5C] shrink-0 mt-0.5 font-bold" />
+                  <span>Exact coordinate inspection via <code className="bg-[#F6F5F1] border border-[#14161A] px-1.5 py-0.5 font-bold text-[11px]">getCanvasState</code></span>
                 </div>
                 <div className="flex items-start gap-2 text-[#14161A]">
-                  <Check size={13} className="text-[#2F7A5C] shrink-0 mt-0.5 font-bold" />
+                  <Check size={14} className="text-[#2F7A5C] shrink-0 mt-0.5 font-bold" />
                   <span>Changes reflow with sub-pixel precision</span>
                 </div>
               </div>
@@ -365,31 +365,31 @@ export default function LandingPage() {
         </section>
 
         {/* 6. Closing CTA Box */}
-        <section className="w-full bg-white border-2 border-[#14161A] shadow-[4px_4px_0_#14161A] p-6 sm:p-8 text-center">
-          <h3 className="text-xl sm:text-2xl font-extrabold text-[#14161A] mb-2">
+        <section className="w-full bg-white border-2 border-[#14161A] shadow-[4px_4px_0_#14161A] p-8 sm:p-12 text-center">
+          <h3 className="text-xl sm:text-3xl font-extrabold text-[#14161A] mb-3">
             Ready to review your layout?
           </h3>
-          <p className="text-xs sm:text-sm text-[#6B7280] mb-6 max-w-md mx-auto font-medium">
+          <p className="text-xs sm:text-sm text-[#6B7280] mb-7 max-w-md mx-auto font-medium">
             Open the workspace, place your components, and let the AI critique and reflow your design in real time.
           </p>
-          <Link href="/workspace" className="neo-btn-primary text-xs sm:text-sm px-7 py-3.5 min-h-[46px] inline-flex">
+          <Link href="/workspace" className="neo-btn-primary text-xs sm:text-sm px-8 py-3.5 min-h-[48px] inline-flex">
             <span>Launch Interactive Workspace</span>
             <ArrowRight size={14} />
           </Link>
         </section>
 
-        {/* 7. Footer Bar */}
-        <footer className="w-full bg-[#F6F5F1] border-2 border-[#14161A] shadow-[2px_2px_0_#14161A] px-4 py-3 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-[#6B7280]">
+        {/* 7. Footer Bar — Spacious inner margins */}
+        <footer className="w-full bg-[#F6F5F1] border-2 border-[#14161A] shadow-[2px_2px_0_#14161A] px-6 sm:px-8 py-4 sm:py-5 flex flex-col sm:flex-row items-center justify-between gap-3.5 text-xs text-[#6B7280]">
           <div className="flex items-center gap-2">
             <span className="font-extrabold text-[#14161A]">CRIT STUDIO</span>
             <span className="text-[#14161A] font-bold">•</span>
             <span>WebMCP Challenge 2026</span>
           </div>
 
-          <div className="flex items-center gap-2.5 font-semibold text-[#14161A]">
+          <div className="flex items-center gap-3 font-semibold text-[#14161A]">
             <span>Next.js 16 + TypeScript + Zustand</span>
             <span className="text-[#D8D5CC]">|</span>
-            <span className="border border-[#14161A] bg-[#F2C94C] px-1.5 py-0.2 text-[9px] font-extrabold shadow-[1px_1px_0_#14161A]">
+            <span className="border border-[#14161A] bg-[#F2C94C] px-2 py-0.5 text-[10px] font-extrabold shadow-[1px_1px_0_#14161A]">
               6 TOOLS REGISTERED
             </span>
           </div>
