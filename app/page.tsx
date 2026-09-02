@@ -4,15 +4,14 @@ import { ArrowRight, Zap, ShieldAlert, CheckCircle2, XCircle, Check, Sparkles } 
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-[#F6F5F1] text-[#14161A] font-sans flex flex-col w-full">
+    <div className="min-h-screen w-full bg-[#F6F5F1] text-[#14161A] font-sans flex flex-col items-center">
       {/* 
-        Single Centered Content Column:
-        - Max-width capped at 1040px so content never stretches too wide on desktop (1440px+)
-        - Flanked by visible --paper background margins
-        - Fluid responsive horizontal padding (px-4 on mobile, px-6 on tablet/desktop)
-        - Consistent vertical rhythm (space-y-10 sm:space-y-14)
+        Centered Main Container:
+        - Constrained to max-w-5xl (1024px) and centered with mx-auto
+        - Balanced horizontal padding (px-4 on mobile, px-6 on tablet, px-8 on desktop)
+        - Fills 100% of available width up to 1024px, flanked by --paper background
       */}
-      <div className="w-full max-w-[1040px] mx-auto px-4 sm:px-6 py-6 sm:py-10 space-y-10 sm:space-y-14 flex-1 flex flex-col">
+      <main className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 space-y-10 sm:space-y-14 flex-1 flex flex-col">
         
         {/* 1. Header Navigation */}
         <header className="w-full bg-[#F6F5F1] border-2 border-[#14161A] shadow-[3px_3px_0_#14161A] px-4 py-3 flex items-center justify-between">
@@ -29,7 +28,7 @@ export default function LandingPage() {
           </Link>
         </header>
 
-        {/* 2. Hero Box Container (All-Light Paper Design System) */}
+        {/* 2. Hero Box Container (Boxed Card Architecture) */}
         <section className="w-full bg-white border-2 border-[#14161A] shadow-[4px_4px_0_#14161A] p-6 sm:p-10 text-center flex flex-col items-center">
           {/* Submission Badge */}
           <div className="inline-flex items-center gap-1.5 bg-[#F6F5F1] border-2 border-[#14161A] shadow-[2px_2px_0_#14161A] px-3 py-1 mb-5 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-[#14161A]">
@@ -37,8 +36,8 @@ export default function LandingPage() {
             <span>WebMCP Challenge 2026 Submission</span>
           </div>
 
-          {/* Fluid Responsive Headline */}
-          <h1 className="text-[clamp(1.75rem,4.5vw+0.75rem,3.25rem)] font-extrabold tracking-tight text-[#14161A] leading-[1.12] mb-4 max-w-2xl">
+          {/* Fluid Responsive Title */}
+          <h1 className="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-[#14161A] leading-[1.15] mb-4 max-w-2xl">
             Give your AI agent hands,<br className="hidden sm:inline" /> not just words.
           </h1>
 
@@ -47,7 +46,7 @@ export default function LandingPage() {
             Crit Studio exposes design canvases as WebMCP tools so AI agents can inspect coordinates, flag visual flaws, resize touch targets, and rebalance layouts live on screen.
           </p>
 
-          {/* Action Row */}
+          {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto">
             <Link href="/workspace" className="neo-btn-primary text-xs sm:text-sm px-6 py-3.5 min-h-[46px] w-full sm:w-auto text-center justify-center">
               <span>Open Interactive Workspace</span>
@@ -60,13 +59,13 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* 3. Three Simple Steps Section (Compact 3-Up Row) */}
-        <section id="how-it-works" className="space-y-3">
+        {/* 3. Three Simple Steps Section */}
+        <section id="how-it-works" className="w-full space-y-3">
           <div className="text-[11px] font-extrabold uppercase tracking-wider text-[#14161A] px-1">
             Three Simple Steps to Review Any Canvas
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 w-full">
             {[
               {
                 step: '1',
@@ -86,7 +85,7 @@ export default function LandingPage() {
             ].map((item) => (
               <div
                 key={item.step}
-                className="bg-white border-2 border-[#14161A] shadow-[3px_3px_0_#14161A] p-4 sm:p-5 flex flex-col text-left"
+                className="w-full bg-white border-2 border-[#14161A] shadow-[3px_3px_0_#14161A] p-4 sm:p-5 flex flex-col text-left"
               >
                 <div className="flex items-center gap-2.5 mb-2.5">
                   <div className="w-6 h-6 border-2 border-[#14161A] bg-[#F2C94C] flex items-center justify-center font-extrabold text-[11px] text-[#14161A]">
@@ -101,9 +100,9 @@ export default function LandingPage() {
         </section>
 
         {/* 4. Canvas Review Document Preview Card */}
-        <section id="canvas-preview" className="space-y-3">
-          {/* Header Bar */}
-          <div className="bg-[#14161A] text-white px-4 py-2.5 border-2 border-[#14161A] shadow-[3px_3px_0_#14161A] flex items-center justify-between">
+        <section id="canvas-preview" className="w-full space-y-3">
+          {/* Top Bar Header */}
+          <div className="w-full bg-[#14161A] text-white px-4 py-2.5 border-2 border-[#14161A] shadow-[3px_3px_0_#14161A] flex items-center justify-between">
             <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider">
               <Sparkles size={13} className="text-[#F2C94C]" />
               <span>Example Review: acme-landing.fig</span>
@@ -116,9 +115,9 @@ export default function LandingPage() {
             </Link>
           </div>
 
-          {/* Canvas Report Document */}
+          {/* Report Document Frame */}
           <div className="w-full bg-white border-2 border-[#14161A] shadow-[4px_4px_0_#14161A] p-4 sm:p-6 overflow-hidden">
-            {/* Header within Report */}
+            {/* Header inside Report */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 mb-4 border-b-2 border-[#14161A] gap-3">
               <div>
                 <div className="flex items-center gap-2">
@@ -130,7 +129,7 @@ export default function LandingPage() {
                 </p>
               </div>
 
-              {/* Stamped Audit Grade Badge */}
+              {/* Audit Grade Badge */}
               <div className="self-start sm:self-auto border-2 border-[#C1272D] bg-[#F6F5F1] px-3 py-1 shadow-[2px_2px_0_#C1272D]">
                 <div className="text-[9px] font-extrabold uppercase text-[#C1272D] tracking-wider">
                   2 ISSUES FLAGGED
@@ -139,14 +138,14 @@ export default function LandingPage() {
               </div>
             </div>
 
-            {/* Visual Canvas Sandbox Preview */}
+            {/* Vector Canvas Preview Box */}
             <div className="w-full aspect-[800/440] bg-[#F6F5F1] border-2 border-[#14161A] overflow-hidden relative mb-5">
               <svg
                 viewBox="0 0 800 440"
                 className="w-full h-full block select-none"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                {/* Background Grid */}
+                {/* Grid Pattern */}
                 <defs>
                   <pattern id="cardGrid" width="20" height="20" patternUnits="userSpaceOnUse">
                     <circle cx="2" cy="2" r="1" fill="#D8D5CC" />
@@ -172,7 +171,7 @@ export default function LandingPage() {
                   </text>
                 </g>
 
-                {/* Flagged Heading Element */}
+                {/* Flagged Heading */}
                 <g transform="translate(30, 75)">
                   <rect
                     x="-3"
@@ -244,7 +243,7 @@ export default function LandingPage() {
                   </text>
                 </g>
 
-                {/* Right Card */}
+                {/* Right Dashboard Block */}
                 <g transform="translate(515, 160)">
                   <rect x="0" y="0" width="255" height="74" fill="#ffffff" stroke="#14161A" strokeWidth="2" />
                   <text x="16" y="32" fill="#14161A" fontSize="11" fontWeight="700" fontFamily="sans-serif">
@@ -258,7 +257,7 @@ export default function LandingPage() {
             </div>
 
             {/* Findings Table */}
-            <div className="border-2 border-[#14161A] bg-white">
+            <div className="w-full border-2 border-[#14161A] bg-white">
               <div className="bg-[#F6F5F1] px-3 py-1.5 border-b-2 border-[#14161A] text-[10px] font-extrabold uppercase tracking-wider text-[#14161A]">
                 CRITIQUE FINDINGS &amp; TOOL AUDIT LOGS
               </div>
@@ -285,7 +284,7 @@ export default function LandingPage() {
                   </span>
                 </div>
 
-                <div className="p-2.5 sm:p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
+                <div className="p-2.5 sm:p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
                     <span className="w-2 h-2 bg-[#F2C94C] border border-[#14161A]" />
                     <span className="font-bold text-[#14161A]">CTA Touch Target Size</span>
@@ -300,15 +299,15 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* 5. Why WebMCP Comparison Section (Compact 2-Up Grid) */}
-        <section className="space-y-3">
+        {/* 5. Why WebMCP Comparison Section */}
+        <section className="w-full space-y-3">
           <div className="text-[11px] font-extrabold uppercase tracking-wider text-[#14161A] px-1">
             Why WebMCP? Spatial Tools vs Passive Chat
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
             {/* Traditional Chat Card */}
-            <div className="bg-white border-2 border-[#14161A] shadow-[3px_3px_0_#14161A] p-5 border-t-4 border-t-[#C1272D] flex flex-col">
+            <div className="w-full bg-white border-2 border-[#14161A] shadow-[3px_3px_0_#14161A] p-5 border-t-4 border-t-[#C1272D] flex flex-col">
               <div className="inline-flex items-center gap-1.5 self-start bg-[#C1272D] text-[#F6F5F1] px-2 py-0.5 border border-[#14161A] font-bold text-[9px] uppercase tracking-wider mb-3">
                 <ShieldAlert size={11} />
                 <span>TRADITIONAL CHAT / VISION</span>
@@ -336,7 +335,7 @@ export default function LandingPage() {
             </div>
 
             {/* WebMCP Spatial Card */}
-            <div className="bg-white border-2 border-[#14161A] shadow-[3px_3px_0_#14161A] p-5 border-t-4 border-t-[#2F7A5C] flex flex-col">
+            <div className="w-full bg-white border-2 border-[#14161A] shadow-[3px_3px_0_#14161A] p-5 border-t-4 border-t-[#2F7A5C] flex flex-col">
               <div className="inline-flex items-center gap-1.5 self-start bg-[#2F7A5C] text-[#F6F5F1] px-2 py-0.5 border border-[#14161A] font-bold text-[9px] uppercase tracking-wider mb-3">
                 <CheckCircle2 size={11} />
                 <span>WEBMCP SPATIAL TOOLS</span>
@@ -396,7 +395,7 @@ export default function LandingPage() {
           </div>
         </footer>
 
-      </div>
+      </main>
     </div>
   );
 }
