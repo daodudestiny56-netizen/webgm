@@ -181,12 +181,10 @@ export const AIChatPanel: React.FC = () => {
   return (
     <div className="flex flex-col h-full bg-[#F6F5F1] font-sans text-xs">
       {/* Header Bar */}
-      <div className="p-3 border-b border-[#D8D5CC] flex items-center justify-between">
-        <div className="flex items-center gap-1.5 font-semibold text-[#17181A]">
-          <Bot size={14} className="text-[#17181A]" />
-          <span>AI Design Assistant</span>
-        </div>
-        <span className="text-[10px] text-[#6B7280]">WebMCP Direct Tools</span>
+      <div className="p-3 border-b border-[#D8D5CC] flex items-center justify-center gap-2">
+        <Bot size={14} className="text-[#17181A]" />
+        <span className="font-semibold text-[#17181A]">AI Design Assistant</span>
+        <span className="text-[10px] text-[#6B7280]">// WebMCP</span>
       </div>
 
       {/* Message History Container */}
@@ -230,47 +228,37 @@ export const AIChatPanel: React.FC = () => {
       </div>
 
       {/* Opening Prompts Suggestions */}
-      <div className="p-2 border-t border-[#D8D5CC] bg-white flex flex-wrap gap-1">
-        <button
-          onClick={() => handleSendMessage("What's wrong with this?")}
-          className="text-[10px] bg-[#F6F5F1] hover:bg-[#EBE8E0] text-[#17181A] border border-[#D8D5CC] px-1.5 py-0.5 transition-colors cursor-pointer"
-        >
-          "What's wrong with this?"
-        </button>
-        <button
-          onClick={() => handleSendMessage('Is the CTA button accessible?')}
-          className="text-[10px] bg-[#F6F5F1] hover:bg-[#EBE8E0] text-[#17181A] border border-[#D8D5CC] px-1.5 py-0.5 transition-colors cursor-pointer"
-        >
-          "Is CTA accessible?"
-        </button>
-        <button
-          onClick={() => handleSendMessage('Fix spacing on the nav bar')}
-          className="text-[10px] bg-[#F6F5F1] hover:bg-[#EBE8E0] text-[#17181A] border border-[#D8D5CC] px-1.5 py-0.5 transition-colors cursor-pointer"
-        >
-          "Fix nav spacing"
-        </button>
-        <button
-          onClick={() => handleSendMessage('Why did you flag the heading?')}
-          className="text-[10px] bg-[#F6F5F1] hover:bg-[#EBE8E0] text-[#17181A] border border-[#D8D5CC] px-1.5 py-0.5 transition-colors cursor-pointer"
-        >
-          "Why flag heading?"
-        </button>
+      <div className="p-2 border-t border-[#D8D5CC] bg-white flex flex-wrap justify-center gap-1.5">
+        {[
+          { label: '"What\'s wrong with this?"', prompt: "What's wrong with this?" },
+          { label: '"Is CTA accessible?"', prompt: 'Is the CTA button accessible?' },
+          { label: '"Fix nav spacing"', prompt: 'Fix spacing on the nav bar' },
+          { label: '"Why flag heading?"', prompt: 'Why did you flag the heading?' },
+        ].map((item) => (
+          <button
+            key={item.prompt}
+            onClick={() => handleSendMessage(item.prompt)}
+            className="text-[10px] bg-[#F6F5F1] hover:bg-[#EBE8E0] text-[#17181A] border border-[#D8D5CC] px-2 py-1 transition-colors cursor-pointer text-center"
+          >
+            {item.label}
+          </button>
+        ))}
       </div>
 
       {/* Chat Input Field */}
-      <div className="p-2 border-t border-[#D8D5CC] bg-[#F6F5F1] flex items-center gap-2">
+      <div className="p-2.5 border-t border-[#D8D5CC] bg-[#F6F5F1] flex items-center gap-2">
         <input
           type="text"
           value={inputPrompt}
           onChange={(e) => setInputPrompt(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
           placeholder="Ask AI agent to review or fix UI..."
-          className="flex-1 bg-white border border-[#D8D5CC] p-2 text-xs text-[#17181A] focus:outline-none focus:border-[#17181A]"
+          className="flex-1 bg-white border border-[#D8D5CC] p-2 text-xs text-[#17181A] focus:outline-none focus:border-[#17181A] text-center placeholder:text-center"
         />
         <button
           onClick={() => handleSendMessage()}
           disabled={isProcessing || !inputPrompt.trim()}
-          className="bg-[#17181A] hover:bg-[#262626] disabled:opacity-50 text-white p-2 border border-[#17181A] cursor-pointer"
+          className="bg-[#17181A] hover:bg-[#262626] disabled:opacity-50 text-white p-2.5 border border-[#17181A] cursor-pointer shrink-0"
         >
           {isProcessing ? <Sparkles size={14} className="animate-spin" /> : <Send size={14} />}
         </button>

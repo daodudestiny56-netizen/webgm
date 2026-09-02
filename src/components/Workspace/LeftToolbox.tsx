@@ -21,14 +21,13 @@ export const LeftToolbox: React.FC<LeftToolboxProps> = ({ isCollapsed = false })
   ];
 
   if (isCollapsed) {
-    // Slim Icon-Only Rail for Tablet View
     return (
-      <aside className="w-12 bg-[#F6F5F1] border-r border-[#D8D5CC] flex flex-col items-center py-2 gap-2 h-full font-sans select-none shrink-0">
+      <aside className="w-12 bg-[#F6F5F1] border-r border-[#D8D5CC] flex flex-col items-center py-3 gap-2 h-full font-sans select-none shrink-0">
         {toolItems.map((item) => (
           <button
             key={item.type}
             onClick={() => addElement(item.type)}
-            className="w-8 h-8 flex items-center justify-center bg-white border border-[#D8D5CC] hover:border-[#17181A] text-[#17181A] transition-colors cursor-pointer"
+            className="w-9 h-9 flex items-center justify-center bg-white border border-[#D8D5CC] hover:border-[#17181A] text-[#17181A] transition-colors cursor-pointer"
             title={`Add ${item.label}`}
           >
             {item.icon}
@@ -39,7 +38,7 @@ export const LeftToolbox: React.FC<LeftToolboxProps> = ({ isCollapsed = false })
 
         <button
           onClick={loadExampleLayout}
-          className="w-8 h-8 flex items-center justify-center bg-white border border-[#D8D5CC] text-[#17181A]"
+          className="w-9 h-9 flex items-center justify-center bg-white border border-[#D8D5CC] text-[#17181A] hover:border-[#17181A] cursor-pointer"
           title="Load Example"
         >
           <Sparkles size={13} />
@@ -52,9 +51,8 @@ export const LeftToolbox: React.FC<LeftToolboxProps> = ({ isCollapsed = false })
     <aside className="w-56 bg-[#F6F5F1] border-r border-[#D8D5CC] flex flex-col h-full font-sans select-none shrink-0">
       {/* Toolbox Section */}
       <div className="p-3 border-b border-[#D8D5CC]">
-        <div className="text-[11px] font-semibold uppercase tracking-wider text-[#6B7280] mb-2 flex items-center justify-between">
-          <span>Insert Components</span>
-          <span className="text-[10px] text-[#6B7280]">Figma Mode</span>
+        <div className="text-[11px] font-semibold uppercase tracking-wider text-[#6B7280] mb-2.5 text-center">
+          Insert Components
         </div>
 
         <div className="grid grid-cols-2 gap-1.5">
@@ -62,18 +60,18 @@ export const LeftToolbox: React.FC<LeftToolboxProps> = ({ isCollapsed = false })
             <button
               key={item.type}
               onClick={() => addElement(item.type)}
-              className="flex items-center gap-1.5 p-2 bg-white border border-[#D8D5CC] hover:border-[#17181A] text-xs font-medium text-[#17181A] transition-colors cursor-pointer"
+              className="flex items-center justify-center gap-1.5 p-2 bg-white border border-[#D8D5CC] hover:border-[#17181A] text-xs font-medium text-[#17181A] transition-colors cursor-pointer"
               title={`Add ${item.label} to canvas`}
             >
-              <Plus size={12} className="text-[#6B7280]" />
-              <span>{item.label}</span>
+              <Plus size={11} className="text-[#6B7280] shrink-0" />
+              <span className="truncate">{item.label}</span>
             </button>
           ))}
         </div>
       </div>
 
       {/* Quick Setup Actions */}
-      <div className="p-3 border-b border-[#D8D5CC] flex items-center justify-between text-xs">
+      <div className="p-3 border-b border-[#D8D5CC] flex items-center justify-center gap-3 text-xs">
         <button
           onClick={loadExampleLayout}
           className="editorial-btn text-xs font-semibold text-[#17181A]"
@@ -83,27 +81,29 @@ export const LeftToolbox: React.FC<LeftToolboxProps> = ({ isCollapsed = false })
           <span>Load Example</span>
         </button>
 
+        <span className="text-[#D8D5CC]">|</span>
+
         <button
           onClick={clearCanvas}
           className="editorial-btn text-xs text-[#B3261E]"
           title="Clear all elements from canvas"
         >
           <Trash2 size={12} />
-          <span>Clear Canvas</span>
+          <span>Clear</span>
         </button>
       </div>
 
       {/* Layers List */}
       <div className="flex-1 p-3 overflow-y-auto">
-        <div className="text-[11px] font-semibold uppercase tracking-wider text-[#6B7280] mb-2 flex items-center justify-between">
+        <div className="text-[11px] font-semibold uppercase tracking-wider text-[#6B7280] mb-2.5 flex items-center justify-between">
           <span>Canvas Layers</span>
-          <span>{elements.length}</span>
+          <span className="bg-[#17181A] text-white text-[10px] w-5 h-5 flex items-center justify-center font-bold">{elements.length}</span>
         </div>
 
         <div className="space-y-1">
           {elements.length === 0 ? (
-            <div className="text-[11px] text-[#6B7280] py-4 text-center border border-dashed border-[#D8D5CC] p-2">
-              Canvas is empty. Click a component above to insert.
+            <div className="text-[11px] text-[#6B7280] py-6 text-center border border-dashed border-[#D8D5CC] p-3">
+              Canvas is empty.<br />Click a component above to insert.
             </div>
           ) : (
             elements.map((el) => {
@@ -112,7 +112,7 @@ export const LeftToolbox: React.FC<LeftToolboxProps> = ({ isCollapsed = false })
                 <div
                   key={el.id}
                   onClick={() => selectElement(el.id)}
-                  className={`flex items-center justify-between p-1.5 border text-xs cursor-pointer transition-colors ${
+                  className={`flex items-center justify-between p-2 border text-xs cursor-pointer transition-colors ${
                     isSelected
                       ? 'bg-[#17181A] text-white border-[#17181A]'
                       : 'bg-white text-[#17181A] border-[#D8D5CC] hover:border-[#17181A]'
@@ -125,7 +125,7 @@ export const LeftToolbox: React.FC<LeftToolboxProps> = ({ isCollapsed = false })
                       e.stopPropagation();
                       deleteElement(el.id);
                     }}
-                    className={`hover:text-red-500 p-0.5 ${isSelected ? 'text-slate-300' : 'text-[#6B7280]'}`}
+                    className={`hover:text-red-500 p-0.5 shrink-0 ${isSelected ? 'text-slate-300' : 'text-[#6B7280]'}`}
                     title="Delete layer"
                   >
                     <Trash2 size={12} />
