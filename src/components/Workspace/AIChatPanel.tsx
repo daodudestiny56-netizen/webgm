@@ -161,10 +161,10 @@ export const AIChatPanel: React.FC = () => {
       {/* Quick Prompts Suggestions */}
       <div className="p-2 border-t-2 border-[#14161A] bg-white flex flex-wrap justify-center gap-1.5">
         {[
-          { label: '🔍 Audit Layout Flaws', prompt: "What's wrong with this?" },
-          { label: '♿ Check CTA Accessibility', prompt: 'Is the CTA button accessible?' },
-          { label: '📐 Rebalance Nav Spacing', prompt: 'Fix spacing on the nav bar' },
-          { label: '💡 Why Flag Heading?', prompt: 'Why did you flag the heading?' },
+          { label: 'Audit Layout Flaws', prompt: "What's wrong with this?" },
+          { label: 'Check CTA Accessibility', prompt: 'Is the CTA button accessible?' },
+          { label: 'Rebalance Nav Spacing', prompt: 'Fix spacing on the nav bar' },
+          { label: 'Why Flag Heading?', prompt: 'Why did you flag the heading?' },
         ].map((item) => (
           <button
             key={item.prompt}
