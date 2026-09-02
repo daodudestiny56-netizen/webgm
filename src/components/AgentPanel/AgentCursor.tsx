@@ -1,5 +1,7 @@
+'use client';
+
 import React from 'react';
-import { useCanvasStore } from '../../store/useCanvasStore';
+import { useCanvasStore } from '@/store/useCanvasStore';
 
 export const AgentCursor: React.FC = () => {
   const agentCursor = useCanvasStore((state) => state.agentCursor);
@@ -16,7 +18,7 @@ export const AgentCursor: React.FC = () => {
       {/* Minimal Ink Dot */}
       <div className="agent-cursor-dot-minimal" />
 
-      {/* Label Text with NO background fill */}
+      {/* Label Text */}
       <div className="agent-cursor-label-minimal">
         {agentCursor.toolName ? `[${agentCursor.toolName}] ` : ''}
         {agentCursor.actionLabel || 'Agent Acting'}

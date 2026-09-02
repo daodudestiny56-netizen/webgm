@@ -1,6 +1,8 @@
+'use client';
+
 import React, { useState } from 'react';
-import { useCanvasStore } from '../../store/useCanvasStore';
-import { registeredToolsMap } from '../../webmcp/registerWebMCPTools';
+import { useCanvasStore } from '@/store/useCanvasStore';
+import { registeredToolsMap } from '@/webmcp/registerWebMCPTools';
 import { Terminal, Play, CheckCircle, AlertCircle, RefreshCw, X } from 'lucide-react';
 
 interface AgentSimulatorProps {
@@ -60,42 +62,43 @@ export const AgentSimulator: React.FC<AgentSimulatorProps> = ({ isOpen, onClose 
       }
       const parsedArgs = JSON.parse(customArgsJson);
       await tool.execute(parsedArgs);
-    } catch (e: any) {
-      alert(`Invalid JSON or tool execution error: ${e.message}`);
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : 'Unknown error';
+      alert(`Invalid JSON or tool execution error: ${msg}`);
     } finally {
       setIsExecuting(false);
     }
   };
 
   return (
-    <div className="w-full p-4 bg-[#17181A] text-white my-2 border border-[#17181A] font-sans text-xs">
+    <div className="w-full p-4 bg-[#F6F5F1] text-[#14161A] my-1 border-2 border-[#14161A] shadow-[4px_4px_0_#14161A] font-sans text-xs">
       {/* Header */}
-      <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-800">
+      <div className="flex items-center justify-between pb-2 mb-3 border-b-2 border-[#14161A]">
         <div className="flex items-center gap-2">
-          <Terminal size={15} className="text-cyan-400" />
-          <span className="font-semibold text-xs text-white">WebMCP Tool Execution Console</span>
-          <span className="text-[11px] text-slate-400 border border-slate-700 px-2 py-0.5">
-            {registeredToolsMap.size} Tools Registered
+          <Terminal size={15} className="text-[#14161A]" />
+          <span className="font-extrabold text-xs text-[#14161A]">WEBMCP TOOL EXECUTION CONSOLE</span>
+          <span className="neo-stamp neo-stamp-mark text-[9px] py-0 px-1">
+            {registeredToolsMap.size} TOOLS REGISTERED
           </span>
         </div>
         <button
           onClick={onClose}
-          className="text-slate-400 hover:text-white text-xs flex items-center gap-1 cursor-pointer"
+          className="neo-btn text-[11px] py-0.5 px-2 flex items-center gap-1 cursor-pointer"
         >
-          <span>Close Console</span>
-          <X size={13} />
+          <span>Close</span>
+          <X size={12} />
         </button>
       </div>
 
-      {/* Main Grid: Left = Quick Tool Execution Form, Right = Real-time Tool Call History */}
+      {/* Main Grid */}
       <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
         {/* Left Column: Direct Execution Form */}
-        <div className="md:col-span-5 bg-slate-900 p-3 border border-slate-800 flex flex-col gap-2">
-          <label className="text-slate-400 text-[11px] font-semibold">SELECT WEBMCP TOOL:</label>
+        <div className="md:col-span-5 bg-white p-3 border-2 border-[#14161A] shadow-[2px_2px_0_#14161A] flex flex-col gap-2">
+          <label className="text-[#14161A] text-[11px] font-extrabold uppercase">SELECT WEBMCP TOOL:</label>
           <select
             value={selectedTool}
             onChange={(e) => handleToolChange(e.target.value)}
-            className="w-full bg-slate-800 border border-slate-700 text-white p-2 text-xs focus:outline-none focus:border-cyan-400"
+            className="w-full bg-[#F6F5F1] border-2 border-[#14161A] text-[#14161A] p-1.5 text-xs font-bold focus:outline-none"
           >
             {Array.from(registeredToolsMap.keys()).map((name) => (
               <option key={name} value={name}>
@@ -104,18 +107,18 @@ export const AgentSimulator: React.FC<AgentSimulatorProps> = ({ isOpen, onClose 
             ))}
           </select>
 
-          <label className="text-slate-400 text-[11px] font-semibold mt-1">JSON INPUT ARGUMENTS:</label>
+          <label className="text-[#14161A] text-[11px] font-extrabold uppercase mt-1">JSON INPUT ARGUMENTS:</label>
           <textarea
             value={customArgsJson}
             onChange={(e) => setCustomArgsJson(e.target.value)}
-            rows={5}
-            className="w-full bg-slate-950 text-cyan-300 font-mono text-[11px] p-2 border border-slate-800 focus:outline-none focus:border-cyan-500 resize-none"
+            rows={4}
+            className="w-full bg-[#F6F5F1] text-[#14161A] font-bold text-xs p-2 border-2 border-[#14161A] focus:outline-none resize-none"
           />
 
           <button
             onClick={handleExecuteSelectedTool}
             disabled={isExecuting}
-            className="mt-1 w-full bg-white hover:bg-slate-200 text-black font-semibold py-1.5 px-3 border border-black flex items-center justify-center gap-2 cursor-pointer text-xs"
+            className="mt-1 w-full neo-btn-primary py-2 text-xs font-bold"
           >
             {isExecuting ? <RefreshCw size={13} className="animate-spin" /> : <Play size={13} />}
             <span>Execute Tool Call</span>
@@ -123,39 +126,39 @@ export const AgentSimulator: React.FC<AgentSimulatorProps> = ({ isOpen, onClose 
         </div>
 
         {/* Right Column: Tool Call Logs */}
-        <div className="md:col-span-7 bg-slate-950 p-3 border border-slate-800 flex flex-col h-64 overflow-hidden">
-          <div className="flex items-center justify-between pb-2 border-b border-slate-800 mb-2">
-            <span className="text-slate-400 text-[11px] font-semibold">REAL-TIME TOOL LOGS ({toolLogs.length})</span>
-            <span className="text-slate-500 text-[10px]">Zustand Store Sync</span>
+        <div className="md:col-span-7 bg-white p-3 border-2 border-[#14161A] shadow-[2px_2px_0_#14161A] flex flex-col h-60 overflow-hidden">
+          <div className="flex items-center justify-between pb-2 border-b-2 border-[#14161A] mb-2">
+            <span className="text-[#14161A] text-[11px] font-extrabold">REAL-TIME TOOL LOGS ({toolLogs.length})</span>
+            <span className="text-[#6B7280] text-[10px] font-bold">Zustand Store Sync</span>
           </div>
 
           <div className="flex-1 overflow-y-auto space-y-2 pr-1">
             {toolLogs.length === 0 ? (
-              <div className="text-slate-600 text-center py-8 text-xs">
-                No tool calls logged yet. Trigger tools via Agent script or Console.
+              <div className="text-[#6B7280] text-center py-8 text-xs font-medium">
+                No tool calls logged yet. Trigger tools via Agent chat or Console.
               </div>
             ) : (
               toolLogs.map((log) => (
-                <div key={log.id} className="bg-slate-900 border border-slate-800 p-2 text-[11px]">
-                  <div className="flex items-center justify-between text-cyan-400 font-semibold mb-1">
+                <div key={log.id} className="bg-[#F6F5F1] border-2 border-[#14161A] shadow-[1px_1px_0_#14161A] p-2 text-[11px]">
+                  <div className="flex items-center justify-between text-[#14161A] font-bold mb-1">
                     <span className="flex items-center gap-1.5">
                       {log.success ? (
-                        <CheckCircle size={12} className="text-emerald-400" />
+                        <CheckCircle size={12} className="text-[#2F7A5C]" />
                       ) : (
-                        <AlertCircle size={12} className="text-rose-400" />
+                        <AlertCircle size={12} className="text-[#C1272D]" />
                       )}
                       <span>{log.toolName}</span>
                     </span>
-                    <span className="text-slate-500 text-[10px]">{log.timestamp}</span>
+                    <span className="text-[#6B7280] text-[10px]">{log.timestamp}</span>
                   </div>
 
-                  <div className="text-slate-300 text-[10px] pl-3 border-l border-slate-700">
+                  <div className="text-[#14161A] text-[10px] pl-2 border-l-2 border-[#14161A]">
                     <div>
-                      <span className="text-amber-400 font-semibold">args: </span>
+                      <span className="font-extrabold text-[#14161A]">args: </span>
                       {JSON.stringify(log.args)}
                     </div>
                     <div>
-                      <span className="text-emerald-400 font-semibold">result: </span>
+                      <span className="font-extrabold text-[#2F7A5C]">result: </span>
                       {JSON.stringify(log.result)}
                     </div>
                   </div>

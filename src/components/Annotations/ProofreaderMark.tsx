@@ -21,61 +21,81 @@ export const ProofreaderFlagMark: React.FC<ProofreaderFlagProps> = ({
   noteY,
 }) => {
   const isResolved = Boolean(flag.resolved);
-  const strokeColor = isResolved ? '#3D6B52' : '#B3261E'; // --confirm vs --redline
+  const color = isResolved ? '#2F7A5C' : '#C1272D'; // --confirm vs --redline
+  const severity = flag.severity || 'medium';
 
-  // Calculate anchor points for wobbly pen circle around element and leader line to note
-  const cx = elementX + elementW / 2;
-  const cy = elementY + elementH / 2;
-  const rx = elementW / 2 + 6;
-  const ry = elementH / 2 + 5;
+  // Unequal visual weight based on severity
+  const borderThickness = severity === 'high' ? 3 : severity === 'medium' ? 2 : 1.5;
+  const shadowOffset = severity === 'high' ? 3 : 2;
 
-  // Connection point on circle perimeter towards noteX, noteY
-  const angle = Math.atan2(noteY - cy, noteX - cx);
-  const startX = cx + rx * Math.cos(angle);
-  const startY = cy + ry * Math.sin(angle);
-
-  // Curved leader line path to note
-  const midX = (startX + noteX) / 2 + 10;
-  const midY = (startY + noteY) / 2 - 10;
+  // Center connection points for straight leader line
+  const startX = elementX + elementW;
+  const startY = elementY + elementH / 2;
+  const endX = noteX;
+  const endY = noteY + 16;
 
   return (
     <>
-      {/* SVG Layer for Pen Circle Mark & Curved Leader Line */}
-      <svg className="absolute inset-0 w-full h-full pointer-events-none z-30 overflow-visible">
-        {/* Wobbly Pen Circle around Element */}
-        <path
-          d={`M ${cx - rx} ${cy} 
-             C ${cx - rx} ${cy - ry - 4}, ${cx + rx + 2} ${cy - ry}, ${cx + rx} ${cy} 
-             C ${cx + rx - 2} ${cy + ry + 4}, ${cx - rx - 2} ${cy + ry}, ${cx - rx} ${cy}`}
-          fill="none"
-          stroke={strokeColor}
-          strokeWidth="1.8"
-          strokeLinecap="round"
-          strokeDasharray="4 1"
-          className="animate-draw-mark"
-        />
+      {/* 1. Hard Outline Box directly around the flagged element */}
+      <div
+        className="absolute pointer-events-none z-30"
+        style={{
+          left: elementX - 4,
+          top: elementY - 4,
+          width: elementW + 8,
+          height: elementH + 8,
+          border: `${borderThickness}px solid ${color}`,
+          boxShadow: `${shadowOffset}px ${shadowOffset}px 0 ${color}`,
+        }}
+      >
+        {/* Stamped Badge on the Top-Right Corner */}
+        <div
+          className="absolute -top-3.5 -right-3 neo-stamp"
+          style={{
+            backgroundColor: color,
+            color: '#F6F5F1',
+            border: '2px solid #14161A',
+            boxShadow: '2px 2px 0 #14161A',
+          }}
+        >
+          {isResolved ? 'APPROVED // FIXED' : `FLAG // ${severity.toUpperCase()}`}
+        </div>
+      </div>
 
-        {/* Thin Pen Leader Line to Margin Note */}
-        <path
-          d={`M ${startX} ${startY} Q ${midX} ${midY} ${noteX} ${noteY + 12}`}
-          fill="none"
-          stroke={strokeColor}
-          strokeWidth="1.2"
-          strokeDasharray="3 2"
-          className="animate-draw-mark"
+      {/* 2. Straight Leader Line */}
+      <svg className="absolute inset-0 w-full h-full pointer-events-none z-20 overflow-visible">
+        <line
+          x1={startX}
+          y1={startY}
+          x2={endX}
+          y2={endY}
+          stroke="#14161A"
+          strokeWidth="1.5"
+          strokeDasharray="4 2"
         />
-
-        {/* Small Pen Tip Dot at Margin Note start */}
-        <circle cx={startX} cy={startY} r="2.5" fill={strokeColor} />
+        <circle cx={startX} cy={startY} r="3" fill="#14161A" />
       </svg>
 
-      {/* Margin Note: Direct Ink on Paper (NO Box, NO Border, NO Shadow) */}
+      {/* 3. Margin Note: Index Card Pinned to Canvas */}
       <div
-        className="absolute z-40 pointer-events-auto max-w-[220px] select-none"
-        style={{ left: noteX, top: noteY }}
+        className="absolute z-40 pointer-events-auto max-w-[220px] bg-[#F6F5F1] p-2.5 select-none"
+        style={{
+          left: noteX,
+          top: noteY,
+          border: '2px solid #14161A',
+          boxShadow: '3px 3px 0 #14161A',
+        }}
       >
-        <p className={isResolved ? 'handwriting-note-confirm' : 'handwriting-note'}>
-          {isResolved ? '[Fixed] ' : ''}
+        <div className="flex items-center gap-1.5 mb-1 pb-1 border-b border-[#D8D5CC]">
+          <span
+            className="w-2 h-2"
+            style={{ backgroundColor: color }}
+          />
+          <span className="font-bold text-[10px] uppercase tracking-wider text-[#14161A]">
+            {isResolved ? 'RESOLVED ISSUE' : `${severity.toUpperCase()} PRIORITY`}
+          </span>
+        </div>
+        <p className="font-sans text-xs text-[#14161A] leading-snug font-medium">
           {flag.reason}
         </p>
       </div>
@@ -94,30 +114,39 @@ export const ProofreaderAnnotationMark: React.FC<ProofreaderAnnotationProps> = (
   noteX,
   noteY,
 }) => {
-  const strokeColor = '#17181A'; // --ink
-
   return (
     <>
-      {/* Small Leader Dot if offset */}
-      <svg className="absolute inset-0 w-full h-full pointer-events-none z-30 overflow-visible">
+      {/* Straight Leader Line */}
+      <svg className="absolute inset-0 w-full h-full pointer-events-none z-20 overflow-visible">
         <line
           x1={annotation.x}
           y1={annotation.y}
           x2={noteX}
-          y2={noteY + 10}
-          stroke={strokeColor}
-          strokeWidth="1"
-          strokeDasharray="2 2"
+          y2={noteY + 12}
+          stroke="#14161A"
+          strokeWidth="1.5"
+          strokeDasharray="4 2"
         />
-        <circle cx={annotation.x} cy={annotation.y} r="2" fill={strokeColor} />
+        <circle cx={annotation.x} cy={annotation.y} r="3" fill="#14161A" />
       </svg>
 
-      {/* Margin Note: Ink on Paper (NO Box, NO Border, NO Shadow) */}
+      {/* Margin Note: Index Card */}
       <div
-        className="absolute z-40 pointer-events-auto max-w-[240px] select-none"
-        style={{ left: noteX, top: noteY }}
+        className="absolute z-40 pointer-events-auto max-w-[220px] bg-[#F6F5F1] p-2.5 select-none"
+        style={{
+          left: noteX,
+          top: noteY,
+          border: '2px solid #14161A',
+          boxShadow: '3px 3px 0 #14161A',
+        }}
       >
-        <p className="font-sans font-medium text-xs text-[#17181A] leading-snug border-l-2 border-[#17181A] pl-2 py-0.5">
+        <div className="flex items-center gap-1.5 mb-1 pb-1 border-b border-[#D8D5CC]">
+          <span className="w-2 h-2 bg-[#F2C94C] border border-[#14161A]" />
+          <span className="font-bold text-[10px] uppercase tracking-wider text-[#14161A]">
+            AGENT NOTE
+          </span>
+        </div>
+        <p className="font-sans text-xs text-[#14161A] leading-snug font-medium">
           {annotation.text}
         </p>
       </div>

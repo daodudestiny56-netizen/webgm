@@ -1,10 +1,12 @@
+'use client';
+
 import React, { useRef, useState, useEffect } from 'react';
-import { useCanvasStore } from '../../store/useCanvasStore';
+import { useCanvasStore } from '@/store/useCanvasStore';
 import { CanvasElementItem } from './CanvasElementItem';
 import { ProofreaderFlagMark, ProofreaderAnnotationMark } from '../Annotations/ProofreaderMark';
 import { AgentCursor } from '../AgentPanel/AgentCursor';
-import { getNonOverlappingPosition } from '../../utils/pinCollision';
-import type { BoundingBox } from '../../utils/pinCollision';
+import { getNonOverlappingPosition } from '@/utils/pinCollision';
+import type { BoundingBox } from '@/utils/pinCollision';
 import { Sparkles, Layers } from 'lucide-react';
 
 export const Canvas: React.FC = () => {
@@ -19,7 +21,6 @@ export const Canvas: React.FC = () => {
       if (!containerRef.current) return;
       const containerWidth = containerRef.current.clientWidth;
       if (containerWidth > 0) {
-        // Target canvas width is 800px
         const newScale = Math.min(1, Math.max(0.4, containerWidth / 800));
         setScale(newScale);
       }
@@ -101,27 +102,29 @@ export const Canvas: React.FC = () => {
   return (
     <div
       ref={containerRef}
-      className="relative w-full overflow-hidden flex flex-col my-1 bg-[#F6F5F1] border border-[#D8D5CC] select-none"
+      className="relative w-full overflow-hidden flex flex-col my-1 bg-[#F6F5F1] border-2 border-[#14161A] shadow-[4px_4px_0_#14161A] select-none"
     >
-      {/* Editorial Canvas Status Bar */}
-      <div className="h-8 px-3 bg-[#F6F5F1] border-b border-[#D8D5CC] flex items-center justify-between font-sans text-xs text-[#17181A] shrink-0">
+      {/* Neobrutalist Status Bar */}
+      <div className="h-8 px-3 bg-[#F6F5F1] border-b-2 border-[#14161A] flex items-center justify-between font-sans text-xs text-[#14161A] shrink-0 font-bold">
         <div className="flex items-center gap-2">
-          <Layers size={13} className="text-[#17181A]" />
-          <span className="font-semibold text-xs tracking-wider uppercase">DRAFTING CANVAS</span>
-          <span className="text-[#6B7280] hidden sm:inline">({elements.length} nodes)</span>
+          <Layers size={13} className="text-[#14161A]" />
+          <span className="font-extrabold text-xs tracking-wider uppercase">DRAFTING CANVAS</span>
+          <span className="text-[#6B7280] font-normal hidden sm:inline">({elements.length} nodes)</span>
         </div>
-        <div className="flex items-center gap-3 text-[11px] text-[#6B7280]">
+        <div className="flex items-center gap-3 text-[11px]">
           {flags.length > 0 && (
-            <span className="text-[#B3261E] font-semibold">
-              {flags.length} {flags.length === 1 ? 'Proof Mark' : 'Proof Marks'}
+            <span className="neo-stamp neo-stamp-redline">
+              {flags.length} {flags.length === 1 ? 'FLAG' : 'FLAGS'}
             </span>
           )}
           {annotations.length > 0 && (
-            <span className="text-[#17181A] font-semibold hidden sm:inline">
-              {annotations.length} Notes
+            <span className="neo-stamp neo-stamp-mark hidden sm:inline-flex">
+              {annotations.length} NOTES
             </span>
           )}
-          <span className="font-mono">{Math.round(scale * 100)}%</span>
+          <span className="border border-[#14161A] bg-white px-1.5 py-0.5 font-bold">
+            {Math.round(scale * 100)}%
+          </span>
         </div>
       </div>
 
@@ -143,7 +146,7 @@ export const Canvas: React.FC = () => {
           }}
         >
           {/* Top Ruler Ticks */}
-          <div className="absolute top-0 left-0 right-0 h-3 border-b border-[#D8D5CC]/60 flex pointer-events-none z-10">
+          <div className="absolute top-0 left-0 right-0 h-3 border-b border-[#D8D5CC] flex pointer-events-none z-10">
             {topTicks.map((x) => (
               <div
                 key={`top-tick-${x}`}
@@ -157,7 +160,7 @@ export const Canvas: React.FC = () => {
           </div>
 
           {/* Left Ruler Ticks */}
-          <div className="absolute top-0 left-0 bottom-0 w-3 border-r border-[#D8D5CC]/60 flex flex-col pointer-events-none z-10">
+          <div className="absolute top-0 left-0 bottom-0 w-3 border-r border-[#D8D5CC] flex flex-col pointer-events-none z-10">
             {leftTicks.map((y) => (
               <div
                 key={`left-tick-${y}`}
@@ -202,27 +205,32 @@ export const Canvas: React.FC = () => {
             />
           ))}
 
-          {/* Render Minimal Agent Cursor */}
+          {/* Render Agent Cursor */}
           <AgentCursor />
 
           {/* Before/After Diff Mode Overlay */}
           {isBeforeAfterMode && beforeSnapshot && (
-            <div className="absolute inset-0 bg-[#F6F5F1]/95 backdrop-blur-[1px] z-50 flex flex-col p-4 pointer-events-auto border-t border-[#D8D5CC]">
-              <div className="border-b border-[#D8D5CC] pb-2 text-xs font-semibold text-[#17181A] flex justify-between items-center mb-3">
-                <span className="flex items-center gap-1">
-                  <Sparkles size={13} /> BEFORE vs AFTER DIFF
+            <div className="absolute inset-0 bg-[#F6F5F1] z-50 flex flex-col p-4 pointer-events-auto border-t-2 border-[#14161A]">
+              <div className="border-b-2 border-[#14161A] pb-2 text-xs font-bold text-[#14161A] flex justify-between items-center mb-3">
+                <span className="flex items-center gap-1.5">
+                  <Sparkles size={13} className="text-[#14161A]" />
+                  <span>BEFORE vs AFTER DIFF</span>
                 </span>
-                <span className="text-[#6B7280]">Left: Original | Right: Current</span>
+                <span className="text-[#6B7280] font-semibold text-[11px]">
+                  Left: Original Baseline // Right: Current Canvas
+                </span>
               </div>
 
               <div className="flex-1 grid grid-cols-2 gap-4">
                 {/* Before Snapshot */}
-                <div className="relative border border-dashed border-[#B3261E] bg-[#B3261E]/5 p-2 overflow-hidden">
-                  <div className="absolute top-2 left-2 text-[10px] font-semibold text-[#B3261E] z-10">BEFORE</div>
+                <div className="relative border-2 border-[#C1272D] shadow-[3px_3px_0_#C1272D] bg-white p-2 overflow-hidden">
+                  <div className="absolute top-2 left-2 neo-stamp neo-stamp-redline z-10">
+                    BEFORE BASELINE
+                  </div>
                   {beforeSnapshot.map((el) => (
                     <div
                       key={el.id}
-                      className="absolute border border-[#B3261E]/40 text-[9px] text-[#B3261E] flex items-center justify-center p-1 overflow-hidden"
+                      className="absolute border-2 border-[#C1272D] bg-[#F6F5F1] text-[9px] font-bold text-[#C1272D] flex items-center justify-center p-1 overflow-hidden"
                       style={{ left: el.x * 0.45, top: el.y * 0.45, width: el.w * 0.45, height: el.h * 0.45 }}
                     >
                       {el.id}
@@ -231,12 +239,14 @@ export const Canvas: React.FC = () => {
                 </div>
 
                 {/* After State */}
-                <div className="relative border border-solid border-[#3D6B52] bg-[#3D6B52]/5 p-2 overflow-hidden">
-                  <div className="absolute top-2 left-2 text-[10px] font-semibold text-[#3D6B52] z-10">AFTER</div>
+                <div className="relative border-2 border-[#2F7A5C] shadow-[3px_3px_0_#2F7A5C] bg-white p-2 overflow-hidden">
+                  <div className="absolute top-2 left-2 neo-stamp neo-stamp-confirm z-10">
+                    AFTER FIXES
+                  </div>
                   {elements.map((el) => (
                     <div
                       key={el.id}
-                      className="absolute border border-[#3D6B52]/40 text-[9px] text-[#3D6B52] flex items-center justify-center p-1 overflow-hidden"
+                      className="absolute border-2 border-[#2F7A5C] bg-[#F6F5F1] text-[9px] font-bold text-[#2F7A5C] flex items-center justify-center p-1 overflow-hidden"
                       style={{ left: el.x * 0.45, top: el.y * 0.45, width: el.w * 0.45, height: el.h * 0.45 }}
                     >
                       {el.id}

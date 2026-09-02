@@ -1,5 +1,7 @@
+'use client';
+
 import React from 'react';
-import { useCanvasStore } from '../../store/useCanvasStore';
+import { useCanvasStore } from '@/store/useCanvasStore';
 import { Sliders, Trash2 } from 'lucide-react';
 
 export const PropertiesPanel: React.FC = () => {
@@ -10,9 +12,11 @@ export const PropertiesPanel: React.FC = () => {
   if (!selectedElement) {
     return (
       <div className="p-6 text-xs text-[#6B7280] font-sans flex flex-col items-center justify-center h-full text-center">
-        <Sliders size={28} className="stroke-1 text-[#D8D5CC] mb-3" />
-        <p className="font-semibold text-sm text-[#17181A] mb-1">No Element Selected</p>
-        <p className="text-[11px] text-center text-balance leading-relaxed max-w-[180px]">
+        <div className="w-12 h-12 bg-white border-2 border-[#14161A] shadow-[2px_2px_0_#14161A] flex items-center justify-center mb-3">
+          <Sliders size={20} className="text-[#14161A]" />
+        </div>
+        <p className="font-extrabold text-sm text-[#14161A] mb-1">NO ELEMENT SELECTED</p>
+        <p className="text-[11px] text-center text-balance leading-relaxed max-w-[180px] font-medium text-[#6B7280]">
           Click an element on the canvas to inspect and edit its properties.
         </p>
       </div>
@@ -22,15 +26,15 @@ export const PropertiesPanel: React.FC = () => {
   return (
     <div className="p-3 bg-[#F6F5F1] font-sans text-xs flex flex-col gap-3 h-full overflow-y-auto">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-[#D8D5CC] pb-2.5">
-        <span className="font-semibold text-xs text-[#17181A] uppercase tracking-wider text-center flex-1">
+      <div className="flex items-center justify-between border-b-2 border-[#14161A] pb-2.5">
+        <span className="font-extrabold text-xs text-[#14161A] uppercase tracking-wider text-center flex-1">
           LAYER // {selectedElement.id}
         </span>
         <button
           onClick={() => deleteElement(selectedElement.id)}
-          className="text-[#B3261E] hover:underline flex items-center gap-1 cursor-pointer shrink-0 ml-2"
+          className="neo-btn text-[#C1272D] text-[11px] font-bold py-1 px-2 shrink-0 ml-2"
         >
-          <Trash2 size={12} />
+          <Trash2 size={11} />
           <span>Delete</span>
         </button>
       </div>
@@ -39,34 +43,40 @@ export const PropertiesPanel: React.FC = () => {
       <div className="space-y-3">
         {/* Text Content */}
         <div>
-          <label className="text-[11px] font-semibold text-[#6B7280] block mb-1 text-center">Text Content</label>
+          <label className="text-[11px] font-extrabold text-[#14161A] block mb-1 text-center uppercase tracking-wider">
+            Text Content
+          </label>
           <textarea
             value={selectedElement.text}
             onChange={(e) => updateElement(selectedElement.id, { text: e.target.value })}
             rows={3}
-            className="w-full bg-white border border-[#D8D5CC] p-2 text-xs text-[#17181A] focus:outline-none focus:border-[#17181A] resize-y font-sans text-center"
+            className="w-full bg-white border-2 border-[#14161A] shadow-[2px_2px_0_#14161A] p-2 text-xs font-bold text-[#14161A] focus:outline-none resize-y font-sans text-center"
           />
         </div>
 
         {/* Spatial Coordinates X, Y */}
         <div className="grid grid-cols-2 gap-2">
           <div>
-            <label className="text-[11px] font-semibold text-[#6B7280] block mb-1 text-center">X Pos (px)</label>
+            <label className="text-[11px] font-extrabold text-[#14161A] block mb-1 text-center uppercase tracking-wider">
+              X Pos (px)
+            </label>
             <input
               type="number"
               value={selectedElement.x}
               onChange={(e) => updateElement(selectedElement.id, { x: Number(e.target.value) })}
-              className="w-full bg-white border border-[#D8D5CC] p-1.5 text-xs text-[#17181A] focus:outline-none focus:border-[#17181A] text-center"
+              className="w-full bg-white border-2 border-[#14161A] shadow-[2px_2px_0_#14161A] p-1.5 text-xs font-bold text-[#14161A] focus:outline-none text-center"
             />
           </div>
 
           <div>
-            <label className="text-[11px] font-semibold text-[#6B7280] block mb-1 text-center">Y Pos (px)</label>
+            <label className="text-[11px] font-extrabold text-[#14161A] block mb-1 text-center uppercase tracking-wider">
+              Y Pos (px)
+            </label>
             <input
               type="number"
               value={selectedElement.y}
               onChange={(e) => updateElement(selectedElement.id, { y: Number(e.target.value) })}
-              className="w-full bg-white border border-[#D8D5CC] p-1.5 text-xs text-[#17181A] focus:outline-none focus:border-[#17181A] text-center"
+              className="w-full bg-white border-2 border-[#14161A] shadow-[2px_2px_0_#14161A] p-1.5 text-xs font-bold text-[#14161A] focus:outline-none text-center"
             />
           </div>
         </div>
@@ -74,22 +84,26 @@ export const PropertiesPanel: React.FC = () => {
         {/* Width & Height */}
         <div className="grid grid-cols-2 gap-2">
           <div>
-            <label className="text-[11px] font-semibold text-[#6B7280] block mb-1 text-center">Width (px)</label>
+            <label className="text-[11px] font-extrabold text-[#14161A] block mb-1 text-center uppercase tracking-wider">
+              Width (px)
+            </label>
             <input
               type="number"
               value={selectedElement.w}
               onChange={(e) => updateElement(selectedElement.id, { w: Number(e.target.value) })}
-              className="w-full bg-white border border-[#D8D5CC] p-1.5 text-xs text-[#17181A] focus:outline-none focus:border-[#17181A] text-center"
+              className="w-full bg-white border-2 border-[#14161A] shadow-[2px_2px_0_#14161A] p-1.5 text-xs font-bold text-[#14161A] focus:outline-none text-center"
             />
           </div>
 
           <div>
-            <label className="text-[11px] font-semibold text-[#6B7280] block mb-1 text-center">Height (px)</label>
+            <label className="text-[11px] font-extrabold text-[#14161A] block mb-1 text-center uppercase tracking-wider">
+              Height (px)
+            </label>
             <input
               type="number"
               value={selectedElement.h}
               onChange={(e) => updateElement(selectedElement.id, { h: Number(e.target.value) })}
-              className="w-full bg-white border border-[#D8D5CC] p-1.5 text-xs text-[#17181A] focus:outline-none focus:border-[#17181A] text-center"
+              className="w-full bg-white border-2 border-[#14161A] shadow-[2px_2px_0_#14161A] p-1.5 text-xs font-bold text-[#14161A] focus:outline-none text-center"
             />
           </div>
         </div>
@@ -97,33 +111,39 @@ export const PropertiesPanel: React.FC = () => {
         {/* Typography & Colors */}
         <div className="grid grid-cols-2 gap-2">
           <div>
-            <label className="text-[11px] font-semibold text-[#6B7280] block mb-1 text-center">Font Size (px)</label>
+            <label className="text-[11px] font-extrabold text-[#14161A] block mb-1 text-center uppercase tracking-wider">
+              Font Size (px)
+            </label>
             <input
               type="number"
               value={selectedElement.fontSize}
               onChange={(e) => updateElement(selectedElement.id, { fontSize: Number(e.target.value) })}
-              className="w-full bg-white border border-[#D8D5CC] p-1.5 text-xs text-[#17181A] focus:outline-none focus:border-[#17181A] text-center"
+              className="w-full bg-white border-2 border-[#14161A] shadow-[2px_2px_0_#14161A] p-1.5 text-xs font-bold text-[#14161A] focus:outline-none text-center"
             />
           </div>
 
           <div>
-            <label className="text-[11px] font-semibold text-[#6B7280] block mb-1 text-center">Text Color</label>
-            <div className="flex items-center justify-center gap-1.5 bg-white border border-[#D8D5CC] p-1.5">
+            <label className="text-[11px] font-extrabold text-[#14161A] block mb-1 text-center uppercase tracking-wider">
+              Text Color
+            </label>
+            <div className="flex items-center justify-center gap-1.5 bg-white border-2 border-[#14161A] shadow-[2px_2px_0_#14161A] p-1.5">
               <input
                 type="color"
-                value={selectedElement.color.length === 7 ? selectedElement.color : '#17181A'}
+                value={selectedElement.color.length === 7 ? selectedElement.color : '#14161A'}
                 onChange={(e) => updateElement(selectedElement.id, { color: e.target.value })}
                 className="w-5 h-5 border-none cursor-pointer p-0 shrink-0"
               />
-              <span className="text-[10px] text-[#17181A] uppercase font-mono">{selectedElement.color}</span>
+              <span className="text-[10px] text-[#14161A] uppercase font-bold">{selectedElement.color}</span>
             </div>
           </div>
         </div>
 
         {/* Background Color */}
         <div>
-          <label className="text-[11px] font-semibold text-[#6B7280] block mb-1 text-center">Background Fill</label>
-          <div className="flex items-center justify-center gap-2 bg-white border border-[#D8D5CC] p-1.5">
+          <label className="text-[11px] font-extrabold text-[#14161A] block mb-1 text-center uppercase tracking-wider">
+            Background Fill
+          </label>
+          <div className="flex items-center justify-center gap-2 bg-white border-2 border-[#14161A] shadow-[2px_2px_0_#14161A] p-1.5">
             <input
               type="color"
               value={
@@ -136,7 +156,7 @@ export const PropertiesPanel: React.FC = () => {
               type="text"
               value={selectedElement.backgroundColor}
               onChange={(e) => updateElement(selectedElement.id, { backgroundColor: e.target.value })}
-              className="flex-1 bg-transparent text-xs text-[#17181A] focus:outline-none font-mono text-center"
+              className="flex-1 bg-transparent text-xs text-[#14161A] focus:outline-none font-bold text-center uppercase"
             />
           </div>
         </div>

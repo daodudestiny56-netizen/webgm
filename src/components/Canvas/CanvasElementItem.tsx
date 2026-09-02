@@ -1,6 +1,8 @@
+'use client';
+
 import React, { useState, useRef, useEffect } from 'react';
-import type { CanvasElement } from '../../types/canvas';
-import { useCanvasStore } from '../../store/useCanvasStore';
+import type { CanvasElement } from '@/types/canvas';
+import { useCanvasStore } from '@/store/useCanvasStore';
 
 interface CanvasElementItemProps {
   element: CanvasElement;
@@ -54,10 +56,18 @@ export const CanvasElementItem: React.FC<CanvasElementItemProps> = ({ element })
   }, [isDragging, element.id, updateElement]);
 
   const getBorderStyle = () => {
-    if (isSelected) return '1px solid #17181A';
-    if (element.borderColor) return `1px solid ${element.borderColor}`;
-    if (element.type === 'button' || element.type === 'card' || element.type === 'nav') return '1px solid #D8D5CC';
-    return '1px transparent';
+    if (isSelected) return '2px solid #14161A';
+    if (element.borderColor) return `2px solid ${element.borderColor}`;
+    if (element.type === 'button') return '2px solid #14161A';
+    if (element.type === 'card' || element.type === 'nav') return '2px solid #14161A';
+    return '2px solid transparent';
+  };
+
+  const getBoxShadow = () => {
+    if (isSelected) return '3px 3px 0 #14161A';
+    if (element.type === 'button') return '2px 2px 0 #14161A';
+    if (element.type === 'card') return '2px 2px 0 #14161A';
+    return 'none';
   };
 
   return (
@@ -78,11 +88,11 @@ export const CanvasElementItem: React.FC<CanvasElementItemProps> = ({ element })
         color: element.color,
         backgroundColor: element.backgroundColor,
         fontSize: element.fontSize,
-        fontWeight: element.fontWeight || 500,
+        fontWeight: element.fontWeight || 600,
         zIndex: isSelected ? 35 : element.zIndex || 5,
         border: getBorderStyle(),
-        boxShadow: 'none', // Strict Removal of Neobrutalist Drop Shadows
-        borderRadius: 0, // Flat rectangular UI chrome
+        boxShadow: getBoxShadow(),
+        borderRadius: 0,
         padding: element.padding || (element.type === 'button' ? '6px 14px' : '4px 8px'),
         display: 'flex',
         alignItems: 'center',
@@ -96,7 +106,7 @@ export const CanvasElementItem: React.FC<CanvasElementItemProps> = ({ element })
       {/* Content Rendering */}
       {element.type === 'card' ? (
         <div className="flex flex-col items-center justify-center p-3 text-center w-full h-full">
-          <p className="font-sans text-xs font-semibold text-[#17181A] whitespace-pre-line leading-relaxed">
+          <p className="font-sans text-xs font-bold text-[#14161A] whitespace-pre-line leading-relaxed">
             {element.text}
           </p>
         </div>
@@ -104,9 +114,9 @@ export const CanvasElementItem: React.FC<CanvasElementItemProps> = ({ element })
         <span className="w-full whitespace-normal break-words leading-tight">{element.text}</span>
       )}
 
-      {/* Selected Indicator Badge (Clean Hairline Label, No Box Shadow) */}
+      {/* Selected Indicator Badge (Neobrutalist Stamp) */}
       {isSelected && (
-        <div className="absolute -top-6 left-0 bg-[#17181A] text-white font-sans text-[10px] font-semibold px-1.5 py-0.5 rounded-none flex items-center gap-1 z-50 pointer-events-none whitespace-nowrap">
+        <div className="absolute -top-6 left-0 bg-[#14161A] text-[#F6F5F1] font-sans text-[10px] font-bold px-1.5 py-0.5 border border-[#14161A] shadow-[2px_2px_0_#14161A] flex items-center gap-1 z-50 pointer-events-none whitespace-nowrap">
           <span>
             {element.id} [{element.x}, {element.y}] {element.w}×{element.h}px
           </span>
